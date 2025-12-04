@@ -587,7 +587,7 @@ class GerenciadorGraficos {
         if (!this.graficos.composicaoPreco) return;
         
         try {
-            const impostos = preco * 0.07; // 7% estimado
+            const impostos = preco * 0.15; // 15% estimado (alterado de 7% para 15%)
             const lucro = preco - custoVarUnit - custoFixoUnit - impostos;
             
             this.graficos.composicaoPreco.data.datasets[0].data = [
@@ -607,19 +607,23 @@ class GerenciadorGraficos {
         if (!this.graficos.distribuicaoPreco || !custos || !preco) return;
         
         try {
+            // Usar dados mais realistas
             const valores = [
                 custos.variavelUnitario || 0,
                 custos.fixoUnitario || 0,
-                preco * 0.07, // Impostos
-                preco * 0.20, // Lucro estimado
-                preco * 0.05, // Marketing
-                preco * 0.03  // Outros
+                preco * 0.15, // Impostos 15%
+                preco * 0.25, // Lucro estimado 25%
+                preco * 0.10, // Marketing 10%
+                preco * 0.05  // Outros 5%
             ];
             
-            // Ajustar para que a soma seja 100%
-            const total = valores.reduce((a, b) => a + b, 0);
-            if (total > 0) {
-                this.graficos.distribuicaoPreco.data.datasets[0].data = valores;
+            // Ajustar para que a soma seja igual ao preço
+            const totalAtual = valores.reduce((a, b) => a + b, 0);
+            const fatorAjuste = preco / totalAtual;
+            
+            if (totalAtual > 0 && fatorAjuste > 0) {
+                const valoresAjustados = valores.map(v => v * fatorAjuste);
+                this.graficos.distribuicaoPreco.data.datasets[0].data = valoresAjustados;
                 this.graficos.distribuicaoPreco.update();
             }
         } catch (error) {
@@ -634,8 +638,16 @@ class GerenciadorGraficos {
             this.graficos.comparacaoConcorrencia.data.datasets[0].data = [
                 precoMin || 45,
                 precoMedio || 60,
-                (precoMax || 80) * 0.9,
+                precoMax || 80,
                 meuPreco || 55
+            ];
+            
+            // Atualizar labels para refletir os nomes corretos
+            this.graficos.comparacaoConcorrencia.data.labels = [
+                'Mais Barato', 
+                'Média Mercado', 
+                'Mais Caro', 
+                'Seu Preço'
             ];
             
             this.graficos.comparacaoConcorrencia.update();
@@ -711,7 +723,17 @@ class GerenciadorGraficos {
                         Math.round((escala / 5) * i)
                     );
                     
+                    // Atualizar dados do gráfico
+                    const custoFixo = dadosNegocio.custos?.fixoMensal || 0;
+                    const lucroUnitario = (dadosNegocio.resultados?.lucroLiquido || 0) / (dadosNegocio.custos?.qtdMensal || 1);
+                    
+                    const custosTotais = labels.map(qtd => custoFixo + (dadosNegocio.custos?.variavelUnitario || 0) * qtd);
+                    const receitasTotais = labels.map(qtd => qtd * (dadosNegocio.precificacao?.precoVenda || 0));
+                    
                     this.graficos.pontoEquilibrio.data.labels = labels;
+                    this.graficos.pontoEquilibrio.data.datasets[0].data = custosTotais;
+                    this.graficos.pontoEquilibrio.data.datasets[1].data = receitasTotais;
+                    
                     this.graficos.pontoEquilibrio.update();
                 }
             }
