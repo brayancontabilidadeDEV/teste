@@ -1,5 +1,5 @@
 // ==================== CALCULADORA MEI PREMIUM - BRAYAN CONTABILIDADE ====================
-// Versão 2.0 - Corrigida e Otimizada
+// Versão 2.1 - Corrigida e com Cenários
 
 // ==================== VARIÁVEIS GLOBAIS ====================
 let dadosNegocio = {
@@ -71,7 +71,7 @@ function inicializarAplicacao() {
 // ==================== NAVEGAÇÃO ====================
 function openTab(tabName) {
     try {
-        const tabsValidas = ['dashboard', 'dados', 'custos', 'precificacao', 'mercado', 'resultados', 'graficos', 'recomendacoes'];
+        const tabsValidas = ['dashboard', 'dados', 'custos', 'precificacao', 'mercado', 'resultados', 'graficos', 'projecoes', 'recomendacoes'];
         if (!tabsValidas.includes(tabName)) {
             console.error('Tab inválida:', tabName);
             return;
@@ -123,6 +123,7 @@ function executarAcoesTab(tabName) {
                 setTimeout(() => window.gerenciadorGraficos.atualizarTodosGraficosComDados(), 300);
             }
         },
+        'projecoes': () => atualizarProjecoes(),
         'recomendacoes': () => gerarRecomendacoes()
     };
     
@@ -226,6 +227,12 @@ function atualizarPrecificacao() {
     atualizarMarkup(markupSugerido);
 }
 
+function atualizarPrecoFinal(valor) {
+    // Atualizar o preço final manualmente
+    const preco = parseFloat(valor) || 0;
+    atualizarElementoTexto('precoFinalSugerido', formatarMoeda(preco));
+}
+
 // ==================== ANÁLISE DE MERCADO ====================
 function analisarConcorrencia() {
     try {
@@ -258,6 +265,11 @@ function analisarConcorrencia() {
         else posicao = 'MUITO ACIMA DA MÉDIA';
         
         atualizarElementoTexto('posicaoMercado', posicao);
+        
+        // Atualizar gráfico de comparação
+        if (window.gerenciadorGraficos) {
+            window.gerenciadorGraficos.atualizarGraficoComparacaoConcorrencia(precoMin, precoMedio, precoMax, meuPreco);
+        }
         
         mostrarToast('Análise de concorrência atualizada!', 'success');
         
@@ -301,6 +313,12 @@ function calcularResultados() {
         atualizarElementoTexto('kpiMargem', `${margemLiquida.toFixed(1)}%`);
         atualizarElementoTexto('kpiPontoEquilibrio', pontoEquilibrio);
         
+        // Atualizar gráficos
+        if (window.gerenciadorGraficos) {
+            window.gerenciadorGraficos.atualizarGraficoComposicao(preco, dadosNegocio.custos.variavelUnitario, dadosNegocio.custos.fixoUnitario, 100);
+            window.gerenciadorGraficos.atualizarGraficoDistribuicaoPreco(dadosNegocio.custos, preco);
+        }
+        
         console.log('✅ Resultados calculados!');
         
     } catch (error) {
@@ -323,13 +341,71 @@ function atualizarDashboard() {
     }
 }
 
+// ==================== PROJEÇÕES E CENÁRIOS ====================
+function atualizarProjecoes() {
+    try {
+        const horizonte = parseInt(document.getElementById('horizonteProjecao')?.value) || 12;
+        const cenario = document.getElementById('cenarioBase')?.value || 'realista';
+        const taxaCrescimentoBase = parseFloat(document.getElementById('taxaCrescimentoProjecao')?.value) || 5;
+        
+        // Ajustar taxa de crescimento baseada no cenário
+        let taxaCrescimento;
+        switch(cenario) {
+            case 'otimista':
+                taxaCrescimento = taxaCrescimentoBase * 1.5;
+                break;
+            case 'pessimista':
+                taxaCrescimento = taxaCrescimentoBase * 0.5;
+                break;
+            default: // realista
+                taxaCrescimento = taxaCrescimentoBase;
+        }
+        
+        const receitaBase = dadosNegocio.resultados?.receitaBruta || 0;
+        const lucroBase = dadosNegocio.resultados?.lucroLiquido || 0;
+        
+        // Gerar projeções
+        const meses = [];
+        const receitas = [];
+        const lucros = [];
+        
+        for (let i = 1; i <= horizonte; i++) {
+            meses.push(`Mês ${i}`);
+            const fator = Math.pow(1 + taxaCrescimento/100, i-1);
+            receitas.push(receitaBase * fator);
+            lucros.push(lucroBase * fator);
+        }
+        
+        // Atualizar gráficos de projeção
+        if (window.gerenciadorGraficos) {
+            window.gerenciadorGraficos.atualizarProjecoes(meses, receitas, lucros);
+        }
+        
+        // Atualizar metas trimestrais
+        if (horizonte >= 3) {
+            atualizarElementoTexto('metaTrimestre1', formatarMoeda(receitas[2]));
+        }
+        if (horizonte >= 6) {
+            atualizarElementoTexto('metaTrimestre2', formatarMoeda(receitas[5]));
+        }
+        
+        mostrarToast(`Projeções atualizadas (cenário ${cenario})!`, 'success');
+        
+    } catch (error) {
+        console.error('Erro ao atualizar projeções:', error);
+    }
+}
+
 // ==================== RECOMENDAÇÕES ====================
 function gerarRecomendacoes() {
     try {
         const margem = dadosNegocio.resultados?.margemLiquida || 0;
+        const pontoEquilibrio = dadosNegocio.resultados?.pontoEquilibrioUnidades || 0;
+        const qtdMensal = dadosNegocio.custos?.qtdMensal || 0;
         
         const recomendacoes = [];
         
+        // Recomendações de precificação
         if (margem < 10) {
             recomendacoes.push({
                 texto: '🚨 AUMENTE O PREÇO URGENTEMENTE',
@@ -341,6 +417,24 @@ function gerarRecomendacoes() {
                 texto: '📈 Considere aumentar preços gradualmente',
                 prioridade: 'media',
                 categoria: 'Precificacao'
+            });
+        }
+        
+        // Recomendações de custos
+        if (dadosNegocio.custos?.fixoMensal > 2000) {
+            recomendacoes.push({
+                texto: '💰 Avalie redução de custos fixos',
+                prioridade: 'media',
+                categoria: 'Custos'
+            });
+        }
+        
+        // Recomendações de mercado
+        if (pontoEquilibrio > qtdMensal * 0.8) {
+            recomendacoes.push({
+                texto: '📊 Ponto de equilíbrio muito alto - reveja estratégia',
+                prioridade: 'alta',
+                categoria: 'Mercado'
             });
         }
         
@@ -363,11 +457,67 @@ function gerarRecomendacoes() {
             }
         });
         
+        // Contar por prioridade
+        const alta = recomendacoes.filter(r => r.prioridade === 'alta').length;
+        const media = recomendacoes.filter(r => r.prioridade === 'media').length;
+        const baixa = recomendacoes.filter(r => r.prioridade === 'baixa').length;
+        
+        atualizarElementoTexto('prioridadeAlta', alta);
+        atualizarElementoTexto('prioridadeMedia', media);
+        atualizarElementoTexto('prioridadeBaixa', baixa);
         atualizarElementoTexto('totalRecomendacoes', recomendacoes.length);
         
     } catch (error) {
         console.error('Erro ao gerar recomendações:', error);
     }
+}
+
+// ==================== FUNÇÕES DO PASSO A PASSO (DADOS) ====================
+function mostrarPassoDados(passo) {
+    // Esconder todos os conteúdos
+    document.querySelectorAll('.passo-conteudo').forEach(el => {
+        el.classList.add('hidden');
+    });
+    
+    // Mostrar o passo selecionado
+    const conteudoPasso = document.getElementById(`conteudoPassoDados${passo}`);
+    if (conteudoPasso) {
+        conteudoPasso.classList.remove('hidden');
+    }
+    
+    // Atualizar botões
+    document.querySelectorAll('[id^="passoDados"]').forEach(btn => {
+        btn.classList.remove('bg-blue-100', 'dark:bg-blue-900', 'text-blue-800', 'dark:text-blue-300');
+        btn.classList.add('bg-gray-100', 'dark:bg-gray-700', 'text-gray-800', 'dark:text-gray-300');
+    });
+    
+    const btnPasso = document.getElementById(`passoDados${passo}`);
+    if (btnPasso) {
+        btnPasso.classList.remove('bg-gray-100', 'dark:bg-gray-700', 'text-gray-800', 'dark:text-gray-300');
+        btnPasso.classList.add('bg-blue-100', 'dark:bg-blue-900', 'text-blue-800', 'dark:text-blue-300');
+    }
+    
+    passoAtualDados = passo;
+}
+
+function avancarPassoDados() {
+    if (passoAtualDados < 4) {
+        mostrarPassoDados(passoAtualDados + 1);
+    } else {
+        // Se estiver no último passo, ir para a tab de custos
+        openTab('custos');
+    }
+}
+
+function voltarPassoDados() {
+    if (passoAtualDados > 1) {
+        mostrarPassoDados(passoAtualDados - 1);
+    }
+}
+
+function salvarRascunho() {
+    saveProgress();
+    mostrarToast('Rascunho salvo com sucesso!', 'success');
 }
 
 // ==================== UTILITÁRIOS ====================
@@ -419,8 +569,27 @@ function toggleDarkMode() {
 
 function saveProgress() {
     try {
-        dadosNegocio.timestamp = new Date().toISOString();
-        localStorage.setItem('dadosNegocio', JSON.stringify(dadosNegocio));
+        // Coletar dados dos inputs
+        const dados = {
+            empresa: {
+                nome: document.getElementById('empresaNome')?.value,
+                cnpj: document.getElementById('empresaCnpj')?.value,
+                setor: document.getElementById('setorEmpresa')?.value,
+                tempoMercado: document.getElementById('tempoMercado')?.value
+            },
+            produto: {
+                nome: document.getElementById('nomeProduto')?.value,
+                categoria: document.getElementById('categoriaProduto')?.value,
+                descricao: document.getElementById('descricaoProduto')?.value,
+                unidadeMedida: document.getElementById('unidadeMedida')?.value,
+                codigo: document.getElementById('codigoProduto')?.value
+            },
+            custos: dadosNegocio.custos,
+            resultados: dadosNegocio.resultados,
+            timestamp: new Date().toISOString()
+        };
+        
+        localStorage.setItem('dadosNegocio', JSON.stringify(dados));
         console.log('💾 Progresso salvo!');
     } catch (error) {
         console.error('Erro ao salvar:', error);
@@ -431,7 +600,33 @@ function carregarDadosSalvos() {
     try {
         const dados = localStorage.getItem('dadosNegocio');
         if (dados) {
-            dadosNegocio = JSON.parse(dados);
+            const dadosParse = JSON.parse(dados);
+            
+            // Restaurar dados básicos
+            if (dadosParse.empresa) {
+                document.getElementById('empresaNome').value = dadosParse.empresa.nome || '';
+                document.getElementById('empresaCnpj').value = dadosParse.empresa.cnpj || '';
+                document.getElementById('setorEmpresa').value = dadosParse.empresa.setor || '';
+                document.getElementById('tempoMercado').value = dadosParse.empresa.tempoMercado || '';
+            }
+            
+            if (dadosParse.produto) {
+                document.getElementById('nomeProduto').value = dadosParse.produto.nome || '';
+                document.getElementById('categoriaProduto').value = dadosParse.produto.categoria || '';
+                document.getElementById('descricaoProduto').value = dadosParse.produto.descricao || '';
+                document.getElementById('unidadeMedida').value = dadosParse.produto.unidadeMedida || '';
+                document.getElementById('codigoProduto').value = dadosParse.produto.codigo || '';
+            }
+            
+            // Restaurar custos e resultados
+            if (dadosParse.custos) {
+                dadosNegocio.custos = dadosParse.custos;
+            }
+            
+            if (dadosParse.resultados) {
+                dadosNegocio.resultados = dadosParse.resultados;
+            }
+            
             console.log('✅ Dados carregados');
         }
         
@@ -447,7 +642,7 @@ function carregarDadosSalvos() {
 
 function inicializarEventos() {
     // Auto-save
-    document.querySelectorAll('input, select').forEach(el => {
+    document.querySelectorAll('input, select, textarea').forEach(el => {
         el.addEventListener('change', saveProgress);
     });
 }
@@ -511,6 +706,21 @@ function calcularTudo() {
     }, 2000);
 }
 
+function exportarTodosGraficos() {
+    if (window.gerenciadorGraficos) {
+        window.gerenciadorGraficos.exportarTodosGraficos();
+    } else {
+        mostrarToast('Gráficos não inicializados', 'error');
+    }
+}
+
+function fecharModal() {
+    const modal = document.getElementById('modalGrafico');
+    if (modal) {
+        modal.hidden = true;
+    }
+}
+
 // ==================== EXPORTAR FUNÇÕES GLOBAIS ====================
 window.openTab = openTab;
 window.toggleDarkMode = toggleDarkMode;
@@ -522,5 +732,13 @@ window.analisarConcorrencia = analisarConcorrencia;
 window.gerarRecomendacoes = gerarRecomendacoes;
 window.atualizarDashboard = atualizarDashboard;
 window.calcularTudo = calcularTudo;
+window.mostrarPassoDados = mostrarPassoDados;
+window.avancarPassoDados = avancarPassoDados;
+window.voltarPassoDados = voltarPassoDados;
+window.salvarRascunho = salvarRascunho;
+window.atualizarPrecoFinal = atualizarPrecoFinal;
+window.atualizarProjecoes = atualizarProjecoes;
+window.exportarTodosGraficos = exportarTodosGraficos;
+window.fecharModal = fecharModal;
 
-console.log('✅ Script principal carregado - Calculadora MEI Premium v2.0');
+console.log('✅ Script principal carregado - Calculadora MEI Premium v2.1');
