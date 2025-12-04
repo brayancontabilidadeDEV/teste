@@ -1,49 +1,64 @@
-// graficos.js - Versão Corrigida e Expandida
+// graficos.js - Versão Corrigida e Funcional
 class GerenciadorGraficos {
     constructor() {
         this.graficos = {};
         this.inicializado = false;
-        this.ctxCache = new Map(); // Cache para contextos de canvas
+        this.ctxCache = new Map();
     }
 
     inicializarTodosGraficos() {
         try {
-            console.log('Inicializando gráficos...');
+            console.log('🚀 Inicializando todos os gráficos...');
             
-            this.inicializarDashboard();
-            this.inicializarComposicaoPreco();
-            this.inicializarDistribuicaoPreco();
-            this.inicializarComparacaoConcorrencia();
-            this.inicializarEvolucaoLucro();
-            this.inicializarPontoEquilibrio();
-            this.inicializarProjecaoFaturamento();
-            this.inicializarProjecaoLucro();
+            // Verificar se Chart.js está disponível
+            if (typeof Chart === 'undefined') {
+                console.error('❌ Chart.js não está carregado!');
+                mostrarToast('Erro: Chart.js não carregado. Recarregue a página.', 'error');
+                return;
+            }
             
-            this.inicializado = true;
-            console.log('Gráficos inicializados com sucesso!');
+            // Aguardar um pouco para garantir que o DOM está pronto
+            setTimeout(() => {
+                this.inicializarDashboard();
+                this.inicializarComposicaoPreco();
+                this.inicializarDistribuicaoPreco();
+                this.inicializarComparacaoConcorrencia();
+                this.inicializarEvolucaoLucro();
+                this.inicializarPontoEquilibrio();
+                this.inicializarProjecaoFaturamento();
+                this.inicializarProjecaoLucro();
+                
+                this.inicializado = true;
+                console.log('✅ Todos os gráficos inicializados com sucesso!');
+                mostrarToast('Gráficos prontos para uso!', 'success');
+            }, 100);
+            
         } catch (error) {
-            console.error('Erro ao inicializar gráficos:', error);
-            throw error;
+            console.error('❌ Erro ao inicializar gráficos:', error);
+            mostrarToast('Erro ao carregar gráficos', 'error');
         }
     }
 
     getContext(canvasId) {
+        // Usar cache para melhor performance
         if (this.ctxCache.has(canvasId)) {
             return this.ctxCache.get(canvasId);
         }
         
         const canvas = document.getElementById(canvasId);
         if (!canvas) {
-            console.warn(`Canvas ${canvasId} não encontrado`);
+            console.warn(`⚠️ Canvas não encontrado: ${canvasId}`);
             return null;
         }
         
-        const ctx = canvas.getContext('2d');
-        if (ctx) {
+        try {
+            const ctx = canvas.getContext('2d');
             this.ctxCache.set(canvasId, ctx);
+            return ctx;
+        } catch (error) {
+            console.error(`❌ Erro ao obter contexto do canvas ${canvasId}:`, error);
+            return null;
         }
-        
-        return ctx;
     }
 
     destruirGrafico(graficoId) {
@@ -52,7 +67,7 @@ class GerenciadorGraficos {
                 this.graficos[graficoId].destroy();
                 delete this.graficos[graficoId];
             } catch (error) {
-                console.warn(`Erro ao destruir gráfico ${graficoId}:`, error);
+                console.warn(`⚠️ Erro ao destruir gráfico ${graficoId}:`, error);
             }
         }
     }
@@ -70,13 +85,14 @@ class GerenciadorGraficos {
                     labels: ['Mês 1', 'Mês 2', 'Mês 3', 'Mês 4', 'Mês 5', 'Mês 6'],
                     datasets: [{
                         label: 'Faturamento Projetado',
-                        data: [0, 0, 0, 0, 0, 0],
+                        data: [1500, 2200, 3000, 3500, 4200, 5000],
                         borderColor: 'rgb(59, 130, 246)',
                         backgroundColor: 'rgba(59, 130, 246, 0.1)',
                         borderWidth: 2,
                         pointRadius: 4,
                         pointBackgroundColor: 'rgb(59, 130, 246)',
-                        tension: 0.4
+                        tension: 0.4,
+                        fill: true
                     }]
                 },
                 options: {
@@ -100,7 +116,20 @@ class GerenciadorGraficos {
                             titleColor: document.body.classList.contains('dark-mode') ? '#f3f4f6' : '#111827',
                             bodyColor: document.body.classList.contains('dark-mode') ? '#f3f4f6' : '#111827',
                             borderColor: document.body.classList.contains('dark-mode') ? '#374151' : '#e5e7eb',
-                            borderWidth: 1
+                            borderWidth: 1,
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += 'R$ ' + context.parsed.y.toLocaleString('pt-BR', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    });
+                                    return label;
+                                }
+                            }
                         }
                     },
                     scales: {
@@ -113,7 +142,7 @@ class GerenciadorGraficos {
                                 color: document.body.classList.contains('dark-mode') ? '#9ca3af' : '#6b7280',
                                 callback: function(value) {
                                     if (value >= 1000) {
-                                        return 'R$ ' + (value / 1000).toFixed(0) + 'k';
+                                        return 'R$ ' + (value / 1000).toFixed(1) + 'k';
                                     }
                                     return 'R$ ' + value;
                                 }
@@ -131,7 +160,7 @@ class GerenciadorGraficos {
                 }
             });
         } catch (error) {
-            console.error('Erro ao inicializar dashboard:', error);
+            console.error('❌ Erro ao inicializar dashboard:', error);
         }
     }
 
@@ -147,7 +176,7 @@ class GerenciadorGraficos {
                 data: {
                     labels: ['Custo Variável', 'Custo Fixo', 'Impostos', 'Lucro'],
                     datasets: [{
-                        data: [25, 25, 25, 25],
+                        data: [30, 20, 15, 35],
                         backgroundColor: [
                             'rgba(239, 68, 68, 0.8)',
                             'rgba(59, 130, 246, 0.8)',
@@ -160,14 +189,14 @@ class GerenciadorGraficos {
                             'rgb(245, 158, 11)',
                             'rgb(16, 185, 129)'
                         ],
-                        borderWidth: 1,
-                        hoverOffset: 4
+                        borderWidth: 2,
+                        hoverOffset: 8
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    cutout: '65%',
+                    cutout: '60%',
                     plugins: {
                         legend: {
                             position: 'bottom',
@@ -175,7 +204,27 @@ class GerenciadorGraficos {
                                 color: document.body.classList.contains('dark-mode') ? '#f3f4f6' : '#111827',
                                 padding: 20,
                                 font: {
-                                    size: 11
+                                    size: 12
+                                },
+                                generateLabels: function(chart) {
+                                    const data = chart.data;
+                                    if (data.labels.length && data.datasets.length) {
+                                        return data.labels.map((label, i) => {
+                                            const value = data.datasets[0].data[i];
+                                            const total = data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                            const percentage = Math.round((value / total) * 100);
+                                            
+                                            return {
+                                                text: `${label}: ${percentage}%`,
+                                                fillStyle: data.datasets[0].backgroundColor[i],
+                                                strokeStyle: data.datasets[0].borderColor[i],
+                                                lineWidth: 1,
+                                                hidden: false,
+                                                index: i
+                                            };
+                                        });
+                                    }
+                                    return [];
                                 }
                             }
                         },
@@ -194,7 +243,7 @@ class GerenciadorGraficos {
                 }
             });
         } catch (error) {
-            console.error('Erro ao inicializar composição de preço:', error);
+            console.error('❌ Erro ao inicializar composição de preço:', error);
         }
     }
 
@@ -210,7 +259,7 @@ class GerenciadorGraficos {
                 data: {
                     labels: ['Matéria-Prima', 'Mão de Obra', 'Impostos', 'Lucro', 'Marketing', 'Outros'],
                     datasets: [{
-                        data: [30, 25, 15, 20, 5, 5],
+                        data: [35, 25, 15, 15, 5, 5],
                         backgroundColor: [
                             'rgba(239, 68, 68, 0.8)',
                             'rgba(59, 130, 246, 0.8)',
@@ -220,7 +269,8 @@ class GerenciadorGraficos {
                             'rgba(156, 163, 175, 0.8)'
                         ],
                         borderColor: document.body.classList.contains('dark-mode') ? '#1f2937' : '#ffffff',
-                        borderWidth: 2
+                        borderWidth: 2,
+                        hoverOffset: 8
                     }]
                 },
                 options: {
@@ -236,12 +286,23 @@ class GerenciadorGraficos {
                                     size: 11
                                 }
                             }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = Math.round((value / total) * 100);
+                                    return `${label}: ${percentage}% (R$ ${value.toFixed(2)})`;
+                                }
+                            }
                         }
                     }
                 }
             });
         } catch (error) {
-            console.error('Erro ao inicializar distribuição de preço:', error);
+            console.error('❌ Erro ao inicializar distribuição de preço:', error);
         }
     }
 
@@ -255,15 +316,15 @@ class GerenciadorGraficos {
             this.graficos.comparacaoConcorrencia = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: ['Concorrente A', 'Concorrente B', 'Concorrente C', 'Seu Preço'],
+                    labels: ['Mais Barato', 'Média Mercado', 'Mais Caro', 'Seu Preço'],
                     datasets: [{
                         label: 'Preço de Venda (R$)',
-                        data: [45.90, 52.50, 48.75, 49.90],
+                        data: [45.90, 52.50, 59.90, 54.80],
                         backgroundColor: [
-                            'rgba(239, 68, 68, 0.6)',
-                            'rgba(59, 130, 246, 0.6)',
-                            'rgba(245, 158, 11, 0.6)',
-                            'rgba(16, 185, 129, 0.6)'
+                            'rgba(239, 68, 68, 0.7)',
+                            'rgba(59, 130, 246, 0.7)',
+                            'rgba(245, 158, 11, 0.7)',
+                            'rgba(16, 185, 129, 0.7)'
                         ],
                         borderColor: [
                             'rgb(239, 68, 68)',
@@ -271,7 +332,8 @@ class GerenciadorGraficos {
                             'rgb(245, 158, 11)',
                             'rgb(16, 185, 129)'
                         ],
-                        borderWidth: 1
+                        borderWidth: 2,
+                        borderRadius: 4
                     }]
                 },
                 options: {
@@ -280,6 +342,13 @@ class GerenciadorGraficos {
                     plugins: {
                         legend: {
                             display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `Preço: R$ ${context.parsed.y.toFixed(2)}`;
+                                }
+                            }
                         }
                     },
                     scales: {
@@ -288,7 +357,11 @@ class GerenciadorGraficos {
                             title: {
                                 display: true,
                                 text: 'Preço (R$)',
-                                color: document.body.classList.contains('dark-mode') ? '#f3f4f6' : '#111827'
+                                color: document.body.classList.contains('dark-mode') ? '#f3f4f6' : '#111827',
+                                font: {
+                                    size: 12,
+                                    weight: 'bold'
+                                }
                             },
                             grid: {
                                 color: document.body.classList.contains('dark-mode') ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'
@@ -305,14 +378,17 @@ class GerenciadorGraficos {
                                 color: document.body.classList.contains('dark-mode') ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'
                             },
                             ticks: {
-                                color: document.body.classList.contains('dark-mode') ? '#9ca3af' : '#6b7280'
+                                color: document.body.classList.contains('dark-mode') ? '#9ca3af' : '#6b7280',
+                                font: {
+                                    size: 11
+                                }
                             }
                         }
                     }
                 }
             });
         } catch (error) {
-            console.error('Erro ao inicializar comparação de concorrência:', error);
+            console.error('❌ Erro ao inicializar comparação de concorrência:', error);
         }
     }
 
@@ -333,18 +409,22 @@ class GerenciadorGraficos {
                             data: [1200, 1900, 1500, 2500, 2200, 3000],
                             borderColor: 'rgb(16, 185, 129)',
                             backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                            borderWidth: 2,
+                            borderWidth: 3,
                             tension: 0.3,
-                            fill: true
+                            fill: true,
+                            pointRadius: 4,
+                            pointBackgroundColor: 'rgb(16, 185, 129)'
                         },
                         {
                             label: 'Faturamento',
                             data: [5000, 7000, 6500, 8000, 7500, 9000],
                             borderColor: 'rgb(59, 130, 246)',
                             backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                            borderWidth: 2,
+                            borderWidth: 3,
                             tension: 0.3,
-                            fill: true
+                            fill: true,
+                            pointRadius: 4,
+                            pointBackgroundColor: 'rgb(59, 130, 246)'
                         }
                     ]
                 },
@@ -359,7 +439,24 @@ class GerenciadorGraficos {
                         legend: {
                             position: 'top',
                             labels: {
-                                color: document.body.classList.contains('dark-mode') ? '#f3f4f6' : '#111827'
+                                color: document.body.classList.contains('dark-mode') ? '#f3f4f6' : '#111827',
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += 'R$ ' + context.parsed.y.toLocaleString('pt-BR');
+                                    return label;
+                                }
                             }
                         }
                     },
@@ -372,7 +469,10 @@ class GerenciadorGraficos {
                             ticks: {
                                 color: document.body.classList.contains('dark-mode') ? '#9ca3af' : '#6b7280',
                                 callback: function(value) {
-                                    return 'R$ ' + value.toLocaleString('pt-BR');
+                                    if (value >= 1000) {
+                                        return 'R$ ' + (value / 1000).toFixed(1) + 'k';
+                                    }
+                                    return 'R$ ' + value;
                                 }
                             }
                         },
@@ -388,7 +488,7 @@ class GerenciadorGraficos {
                 }
             });
         } catch (error) {
-            console.error('Erro ao inicializar evolução do lucro:', error);
+            console.error('❌ Erro ao inicializar evolução do lucro:', error);
         }
     }
 
@@ -409,16 +509,18 @@ class GerenciadorGraficos {
                             data: [800, 1100, 1400, 1700, 2000, 2300],
                             borderColor: 'rgb(239, 68, 68)',
                             backgroundColor: 'rgba(239, 68, 68, 0.1)',
-                            borderWidth: 2,
-                            tension: 0.3
+                            borderWidth: 3,
+                            tension: 0.3,
+                            pointRadius: 4
                         },
                         {
                             label: 'Receita Total',
                             data: [0, 1000, 2000, 3000, 4000, 5000],
                             borderColor: 'rgb(16, 185, 129)',
                             backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                            borderWidth: 2,
-                            tension: 0.3
+                            borderWidth: 3,
+                            tension: 0.3,
+                            pointRadius: 4
                         }
                     ]
                 },
@@ -429,7 +531,22 @@ class GerenciadorGraficos {
                         legend: {
                             position: 'top',
                             labels: {
-                                color: document.body.classList.contains('dark-mode') ? '#f3f4f6' : '#111827'
+                                color: document.body.classList.contains('dark-mode') ? '#f3f4f6' : '#111827',
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += 'R$ ' + context.parsed.y.toLocaleString('pt-BR');
+                                    return label;
+                                }
                             }
                         }
                     },
@@ -439,7 +556,11 @@ class GerenciadorGraficos {
                             title: {
                                 display: true,
                                 text: 'Valor (R$)',
-                                color: document.body.classList.contains('dark-mode') ? '#f3f4f6' : '#111827'
+                                color: document.body.classList.contains('dark-mode') ? '#f3f4f6' : '#111827',
+                                font: {
+                                    size: 12,
+                                    weight: 'bold'
+                                }
                             },
                             grid: {
                                 color: document.body.classList.contains('dark-mode') ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'
@@ -452,7 +573,11 @@ class GerenciadorGraficos {
                             title: {
                                 display: true,
                                 text: 'Quantidade Vendida',
-                                color: document.body.classList.contains('dark-mode') ? '#f3f4f6' : '#111827'
+                                color: document.body.classList.contains('dark-mode') ? '#f3f4f6' : '#111827',
+                                font: {
+                                    size: 12,
+                                    weight: 'bold'
+                                }
                             },
                             grid: {
                                 color: document.body.classList.contains('dark-mode') ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'
@@ -465,7 +590,7 @@ class GerenciadorGraficos {
                 }
             });
         } catch (error) {
-            console.error('Erro ao inicializar ponto de equilíbrio:', error);
+            console.error('❌ Erro ao inicializar ponto de equilíbrio:', error);
         }
     }
 
@@ -485,9 +610,11 @@ class GerenciadorGraficos {
                         data: [5000, 5500, 6000, 6500, 7000, 7500],
                         borderColor: 'rgb(59, 130, 246)',
                         backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                        borderWidth: 2,
+                        borderWidth: 3,
                         fill: true,
-                        tension: 0.4
+                        tension: 0.4,
+                        pointRadius: 4,
+                        pointBackgroundColor: 'rgb(59, 130, 246)'
                     }]
                 },
                 options: {
@@ -497,7 +624,22 @@ class GerenciadorGraficos {
                         legend: {
                             position: 'top',
                             labels: {
-                                color: document.body.classList.contains('dark-mode') ? '#f3f4f6' : '#111827'
+                                color: document.body.classList.contains('dark-mode') ? '#f3f4f6' : '#111827',
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += 'R$ ' + context.parsed.y.toLocaleString('pt-BR');
+                                    return label;
+                                }
                             }
                         }
                     },
@@ -508,7 +650,13 @@ class GerenciadorGraficos {
                                 color: document.body.classList.contains('dark-mode') ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'
                             },
                             ticks: {
-                                color: document.body.classList.contains('dark-mode') ? '#9ca3af' : '#6b7280'
+                                color: document.body.classList.contains('dark-mode') ? '#9ca3af' : '#6b7280',
+                                callback: function(value) {
+                                    if (value >= 1000) {
+                                        return 'R$ ' + (value / 1000).toFixed(1) + 'k';
+                                    }
+                                    return 'R$ ' + value;
+                                }
                             }
                         },
                         x: {
@@ -523,7 +671,7 @@ class GerenciadorGraficos {
                 }
             });
         } catch (error) {
-            console.error('Erro ao inicializar projeção de faturamento:', error);
+            console.error('❌ Erro ao inicializar projeção de faturamento:', error);
         }
     }
 
@@ -543,7 +691,8 @@ class GerenciadorGraficos {
                         data: [1000, 1200, 1400, 1600, 1800, 2000],
                         backgroundColor: 'rgba(16, 185, 129, 0.7)',
                         borderColor: 'rgb(16, 185, 129)',
-                        borderWidth: 1
+                        borderWidth: 2,
+                        borderRadius: 4
                     }]
                 },
                 options: {
@@ -553,7 +702,17 @@ class GerenciadorGraficos {
                         legend: {
                             position: 'top',
                             labels: {
-                                color: document.body.classList.contains('dark-mode') ? '#f3f4f6' : '#111827'
+                                color: document.body.classList.contains('dark-mode') ? '#f3f4f6' : '#111827',
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `Lucro: R$ ${context.parsed.y.toLocaleString('pt-BR')}`;
+                                }
                             }
                         }
                     },
@@ -564,7 +723,13 @@ class GerenciadorGraficos {
                                 color: document.body.classList.contains('dark-mode') ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'
                             },
                             ticks: {
-                                color: document.body.classList.contains('dark-mode') ? '#9ca3af' : '#6b7280'
+                                color: document.body.classList.contains('dark-mode') ? '#9ca3af' : '#6b7280',
+                                callback: function(value) {
+                                    if (value >= 1000) {
+                                        return 'R$ ' + (value / 1000).toFixed(1) + 'k';
+                                    }
+                                    return 'R$ ' + value;
+                                }
                             }
                         },
                         x: {
@@ -579,7 +744,7 @@ class GerenciadorGraficos {
                 }
             });
         } catch (error) {
-            console.error('Erro ao inicializar projeção de lucro:', error);
+            console.error('❌ Erro ao inicializar projeção de lucro:', error);
         }
     }
 
@@ -587,19 +752,22 @@ class GerenciadorGraficos {
         if (!this.graficos.composicaoPreco) return;
         
         try {
-            const impostos = preco * 0.15; // 15% estimado (alterado de 7% para 15%)
+            const impostos = preco * 0.15;
             const lucro = preco - custoVarUnit - custoFixoUnit - impostos;
             
-            this.graficos.composicaoPreco.data.datasets[0].data = [
+            // Garantir valores não negativos
+            const dados = [
                 Math.max(custoVarUnit, 0),
                 Math.max(custoFixoUnit, 0),
                 Math.max(impostos, 0),
                 Math.max(lucro, 0)
             ];
             
-            this.graficos.composicaoPreco.update();
+            this.graficos.composicaoPreco.data.datasets[0].data = dados;
+            this.graficos.composicaoPreco.update('none');
+            
         } catch (error) {
-            console.error('Erro ao atualizar gráfico de composição:', error);
+            console.error('❌ Erro ao atualizar gráfico de composição:', error);
         }
     }
 
@@ -607,27 +775,20 @@ class GerenciadorGraficos {
         if (!this.graficos.distribuicaoPreco || !custos || !preco) return;
         
         try {
-            // Usar dados mais realistas
             const valores = [
                 custos.variavelUnitario || 0,
                 custos.fixoUnitario || 0,
-                preco * 0.15, // Impostos 15%
-                preco * 0.25, // Lucro estimado 25%
-                preco * 0.10, // Marketing 10%
-                preco * 0.05  // Outros 5%
+                preco * 0.15,
+                preco * 0.20,
+                preco * 0.08,
+                preco * 0.05
             ];
             
-            // Ajustar para que a soma seja igual ao preço
-            const totalAtual = valores.reduce((a, b) => a + b, 0);
-            const fatorAjuste = preco / totalAtual;
+            this.graficos.distribuicaoPreco.data.datasets[0].data = valores;
+            this.graficos.distribuicaoPreco.update('none');
             
-            if (totalAtual > 0 && fatorAjuste > 0) {
-                const valoresAjustados = valores.map(v => v * fatorAjuste);
-                this.graficos.distribuicaoPreco.data.datasets[0].data = valoresAjustados;
-                this.graficos.distribuicaoPreco.update();
-            }
         } catch (error) {
-            console.error('Erro ao atualizar gráfico de distribuição:', error);
+            console.error('❌ Erro ao atualizar gráfico de distribuição:', error);
         }
     }
 
@@ -636,78 +797,72 @@ class GerenciadorGraficos {
         
         try {
             this.graficos.comparacaoConcorrencia.data.datasets[0].data = [
-                precoMin || 45,
-                precoMedio || 60,
-                precoMax || 80,
-                meuPreco || 55
+                precoMin || 0,
+                precoMedio || 0,
+                precoMax || 0,
+                meuPreco || 0
             ];
             
-            // Atualizar labels para refletir os nomes corretos
-            this.graficos.comparacaoConcorrencia.data.labels = [
-                'Mais Barato', 
-                'Média Mercado', 
-                'Mais Caro', 
-                'Seu Preço'
-            ];
+            this.graficos.comparacaoConcorrencia.update('none');
             
-            this.graficos.comparacaoConcorrencia.update();
         } catch (error) {
-            console.error('Erro ao atualizar gráfico de comparação:', error);
+            console.error('❌ Erro ao atualizar gráfico de comparação:', error);
         }
     }
 
     atualizarProjecoes(meses, receitas, lucros) {
-        if (this.graficos.projecaoFaturamento && receitas) {
-            try {
+        try {
+            if (this.graficos.projecaoFaturamento && receitas) {
                 this.graficos.projecaoFaturamento.data.labels = meses;
                 this.graficos.projecaoFaturamento.data.datasets[0].data = receitas;
-                this.graficos.projecaoFaturamento.update();
-            } catch (error) {
-                console.error('Erro ao atualizar projeção de faturamento:', error);
+                this.graficos.projecaoFaturamento.update('none');
             }
-        }
-        
-        if (this.graficos.projecaoLucro && lucros) {
-            try {
+            
+            if (this.graficos.projecaoLucro && lucros) {
                 this.graficos.projecaoLucro.data.labels = meses;
                 this.graficos.projecaoLucro.data.datasets[0].data = lucros;
-                this.graficos.projecaoLucro.update();
-            } catch (error) {
-                console.error('Erro ao atualizar projeção de lucro:', error);
+                this.graficos.projecaoLucro.update('none');
             }
+            
+        } catch (error) {
+            console.error('❌ Erro ao atualizar projeções:', error);
         }
     }
 
     atualizarTodosGraficosComDados() {
         if (!this.inicializado) {
-            console.warn('Gráficos não inicializados');
+            console.warn('⚠️ Gráficos não inicializados');
             return;
         }
         
         try {
-            console.log("Atualizando todos os gráficos com dados...");
+            console.log('🔄 Atualizando todos os gráficos com dados...');
+            
+            // Obter dados da interface
+            const precoElement = document.getElementById('precoVendaFinal');
+            const preco = precoElement ? parseFloat(precoElement.value) || 0 : 0;
+            
+            const qtdElement = document.getElementById('qtdVendaMensal');
+            const qtdMensal = qtdElement ? parseInt(qtdElement.value) || 100 : 100;
+            
+            // Atualizar composição de preço
+            if (this.graficos.composicaoPreco && preco > 0) {
+                const custoVarUnit = parseFloat(document.getElementById('materiaPrima')?.value) || 0;
+                const custoFixoMensal = parseFloat(document.getElementById('aluguel')?.value) || 0;
+                const custoFixoUnit = qtdMensal > 0 ? custoFixoMensal / qtdMensal : 0;
+                
+                this.atualizarGraficoComposicao(preco, custoVarUnit, custoFixoUnit, 100);
+            }
             
             // Atualizar dashboard
             if (this.graficos.dashboard) {
                 const faturamentoBase = parseFloat(document.getElementById('kpiFaturamento')?.textContent?.replace(/[^\d,]/g, '').replace(',', '.') || 0);
                 if (faturamentoBase > 0) {
                     const projecao = Array.from({length: 6}, (_, i) => 
-                        faturamentoBase * (1 + (i * 0.15))
+                        faturamentoBase * (1 + (i * 0.1))
                     );
                     this.graficos.dashboard.data.datasets[0].data = projecao;
-                    this.graficos.dashboard.update();
-                }
-            }
-            
-            // Atualizar evolução do lucro com dados reais
-            if (this.graficos.evolucaoLucro) {
-                const lucroAtual = parseFloat(document.getElementById('kpiLucro')?.textContent?.replace(/[^\d,]/g, '').replace(',', '.') || 0);
-                if (lucroAtual > 0) {
-                    const lucros = Array.from({length: 6}, (_, i) => 
-                        lucroAtual * (0.8 + (i * 0.08))
-                    );
-                    this.graficos.evolucaoLucro.data.datasets[0].data = lucros;
-                    this.graficos.evolucaoLucro.update();
+                    this.graficos.dashboard.update('none');
                 }
             }
             
@@ -715,38 +870,32 @@ class GerenciadorGraficos {
             if (this.graficos.pontoEquilibrio) {
                 const pontoEquilibrio = parseInt(document.getElementById('kpiPontoEquilibrio')?.textContent || 32);
                 if (pontoEquilibrio > 0) {
-                    // Ajustar dados do gráfico baseado no ponto de equilíbrio
-                    const qtdVendida = parseInt(document.getElementById('qtdVendaMensal')?.value || 100);
-                    const escala = Math.max(pontoEquilibrio * 2, qtdVendida);
+                    const labels = ['0', '20', '40', '60', '80', '100'];
+                    const custoFixo = parseFloat(document.getElementById('aluguel')?.value) || 800;
+                    const custoVarUnit = parseFloat(document.getElementById('materiaPrima')?.value) || 10;
+                    const precoVenda = preco || 50;
                     
-                    const labels = Array.from({length: 6}, (_, i) => 
-                        Math.round((escala / 5) * i)
-                    );
-                    
-                    // Atualizar dados do gráfico
-                    const custoFixo = dadosNegocio.custos?.fixoMensal || 0;
-                    const lucroUnitario = (dadosNegocio.resultados?.lucroLiquido || 0) / (dadosNegocio.custos?.qtdMensal || 1);
-                    
-                    const custosTotais = labels.map(qtd => custoFixo + (dadosNegocio.custos?.variavelUnitario || 0) * qtd);
-                    const receitasTotais = labels.map(qtd => qtd * (dadosNegocio.precificacao?.precoVenda || 0));
+                    const custosTotais = labels.map(qtd => custoFixo + (custoVarUnit * parseInt(qtd)));
+                    const receitasTotais = labels.map(qtd => parseInt(qtd) * precoVenda);
                     
                     this.graficos.pontoEquilibrio.data.labels = labels;
                     this.graficos.pontoEquilibrio.data.datasets[0].data = custosTotais;
                     this.graficos.pontoEquilibrio.data.datasets[1].data = receitasTotais;
-                    
-                    this.graficos.pontoEquilibrio.update();
+                    this.graficos.pontoEquilibrio.update('none');
                 }
             }
             
+            console.log('✅ Gráficos atualizados!');
+            
         } catch (error) {
-            console.error('Erro ao atualizar gráficos com dados:', error);
+            console.error('❌ Erro ao atualizar gráficos com dados:', error);
         }
     }
 
     exportarGraficoParaImagem(idGrafico, nomeArquivo) {
         const canvas = document.getElementById(idGrafico);
         if (!canvas) {
-            console.error(`Canvas com ID ${idGrafico} não encontrado.`);
+            console.error(`❌ Canvas com ID ${idGrafico} não encontrado.`);
             return false;
         }
 
@@ -757,7 +906,7 @@ class GerenciadorGraficos {
             link.click();
             return true;
         } catch (error) {
-            console.error('Erro ao exportar gráfico:', error);
+            console.error('❌ Erro ao exportar gráfico:', error);
             return false;
         }
     }
@@ -777,67 +926,127 @@ class GerenciadorGraficos {
         let exportados = 0;
         const dataHoje = new Date().toISOString().split('T')[0];
         
+        // Exportar um por um com delay
         graficosIds.forEach((id, index) => {
             setTimeout(() => {
                 if (this.exportarGraficoParaImagem(id, `grafico-${dataHoje}-${index + 1}.png`)) {
                     exportados++;
                 }
-            }, index * 500); // Delay para evitar sobrecarga
+            }, index * 500);
         });
         
+        // Mostrar resultado
         setTimeout(() => {
             if (exportados > 0) {
                 mostrarToast(`${exportados} gráficos exportados com sucesso!`, 'success');
+            } else {
+                mostrarToast('Nenhum gráfico exportado', 'warning');
             }
         }, graficosIds.length * 500 + 1000);
     }
 
     atualizarCoresDarkMode() {
-        // Atualizar cores dos gráficos quando o modo dark muda
-        Object.values(this.graficos).forEach(grafico => {
-            if (grafico && grafico.options) {
-                // Atualizar cores das escalas
-                if (grafico.options.scales) {
-                    Object.values(grafico.options.scales).forEach(scale => {
-                        if (scale.grid) {
-                            scale.grid.color = document.body.classList.contains('dark-mode') ? 
-                                'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
-                        }
-                        if (scale.ticks) {
-                            scale.ticks.color = document.body.classList.contains('dark-mode') ? 
-                                '#9ca3af' : '#6b7280';
-                        }
-                    });
+        try {
+            Object.values(this.graficos).forEach(grafico => {
+                if (grafico && grafico.options) {
+                    const isDark = document.body.classList.contains('dark-mode');
+                    
+                    // Atualizar cores das escalas
+                    if (grafico.options.scales) {
+                        Object.values(grafico.options.scales).forEach(scale => {
+                            if (scale.grid) {
+                                scale.grid.color = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
+                            }
+                            if (scale.ticks) {
+                                scale.ticks.color = isDark ? '#9ca3af' : '#6b7280';
+                            }
+                            if (scale.title && scale.title.color) {
+                                scale.title.color = isDark ? '#f3f4f6' : '#111827';
+                            }
+                        });
+                    }
+                    
+                    // Atualizar cores da legenda
+                    if (grafico.options.plugins?.legend?.labels) {
+                        grafico.options.plugins.legend.labels.color = isDark ? '#f3f4f6' : '#111827';
+                    }
+                    
+                    // Atualizar cores do tooltip
+                    if (grafico.options.plugins?.tooltip) {
+                        grafico.options.plugins.tooltip.backgroundColor = isDark ? '#1f2937' : '#ffffff';
+                        grafico.options.plugins.tooltip.titleColor = isDark ? '#f3f4f6' : '#111827';
+                        grafico.options.plugins.tooltip.bodyColor = isDark ? '#f3f4f6' : '#111827';
+                        grafico.options.plugins.tooltip.borderColor = isDark ? '#374151' : '#e5e7eb';
+                    }
+                    
+                    grafico.update('none');
                 }
-                
-                // Atualizar cores da legenda
-                if (grafico.options.plugins?.legend?.labels) {
-                    grafico.options.plugins.legend.labels.color = document.body.classList.contains('dark-mode') ? 
-                        '#f3f4f6' : '#111827';
-                }
-                
-                grafico.update();
-            }
-        });
+            });
+            
+            console.log('🎨 Cores do dark mode atualizadas');
+        } catch (error) {
+            console.error('❌ Erro ao atualizar cores do dark mode:', error);
+        }
     }
 }
 
-// Inicializar quando o DOM estiver pronto
+// ==================== FUNÇÕES GLOBAIS ====================
+window.gerenciadorGraficos = new GerenciadorGraficos();
+
+// Função auxiliar global
+window.mostrarToast = function(mensagem, tipo = 'info') {
+    const toast = document.getElementById('toast');
+    if (!toast) return;
+    
+    const cores = {
+        'success': 'bg-green-600',
+        'error': 'bg-red-600',
+        'warning': 'bg-yellow-600',
+        'info': 'bg-blue-600'
+    };
+    
+    toast.className = `toast ${cores[tipo] || 'bg-blue-600'}`;
+    toast.textContent = mensagem;
+    toast.style.display = 'block';
+    
+    setTimeout(() => {
+        toast.style.display = 'none';
+    }, 3000);
+};
+
+// ==================== INICIALIZAÇÃO ====================
 document.addEventListener('DOMContentLoaded', function() {
-    try {
-        window.gerenciadorGraficos = new GerenciadorGraficos();
-        
-        // Adicionar listener para dark mode
-        document.addEventListener('darkModeChanged', function() {
-            if (window.gerenciadorGraficos) {
-                setTimeout(() => {
-                    window.gerenciadorGraficos.atualizarCoresDarkMode();
-                }, 100);
-            }
-        });
-        
-        console.log('Gerenciador de gráficos inicializado com sucesso!');
-    } catch (error) {
-        console.error('Erro ao inicializar gerenciador de gráficos:', error);
+    console.log('📄 DOM carregado - Inicializando gráficos...');
+    
+    // Verificar se Chart.js está disponível
+    if (typeof Chart === 'undefined') {
+        console.error('❌ Chart.js não carregado!');
+        mostrarToast('Erro: Chart.js não encontrado. Recarregue a página.', 'error');
+        return;
     }
+    
+    console.log('✅ Chart.js versão:', Chart.version);
+    
+    // Inicializar gráficos após um pequeno delay para garantir que todos os elementos estão carregados
+    setTimeout(() => {
+        window.gerenciadorGraficos.inicializarTodosGraficos();
+    }, 500);
+    
+    // Adicionar listener para dark mode
+    document.addEventListener('darkModeChanged', function() {
+        if (window.gerenciadorGraficos) {
+            setTimeout(() => {
+                window.gerenciadorGraficos.atualizarCoresDarkMode();
+            }, 100);
+        }
+    });
 });
+
+// Exportar função global para botão
+window.exportarTodosGraficos = function() {
+    if (window.gerenciadorGraficos) {
+        window.gerenciadorGraficos.exportarTodosGraficos();
+    } else {
+        mostrarToast('Gerenciador de gráficos não inicializado', 'error');
+    }
+};
