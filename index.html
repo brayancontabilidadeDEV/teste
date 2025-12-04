@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Calculadora de Precificação MEI Premium - Ferramenta completa para cálculo de preços, análise de custos e planejamento financeiro">
+    <meta name="description" content="Calculadora de Precificação MEI Premium - Brayan Contabilidade">
     <meta name="keywords" content="MEI, precificação, calculadora, contabilidade, Brayan, custos, preços">
     <title>Calculadora MEI Premium - Brayan Contabilidade</title>
     
@@ -34,10 +34,7 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Scripts serão carregados no final do body -->
-    
     <style>
-        /* Estilos otimizados */
         :root {
             --primary: #3b82f6;
             --primary-dark: #1d4ed8;
@@ -55,18 +52,15 @@
             -moz-osx-font-smoothing: grayscale;
         }
         
-        /* Dark Mode */
         .dark body {
             background-color: var(--dark-bg);
             color: var(--dark-text);
         }
         
-        /* Transições suaves */
         * {
             transition: background-color 0.3s ease, border-color 0.3s ease;
         }
         
-        /* Tabs */
         .tab-content {
             display: none;
             opacity: 0;
@@ -81,13 +75,9 @@
         }
         
         @keyframes fadeIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            to { opacity: 1; transform: translateY(0); }
         }
         
-        /* Cards */
         .glass-card {
             background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(10px);
@@ -99,7 +89,6 @@
             border: 1px solid rgba(100, 116, 139, 0.3);
         }
         
-        /* Gradientes */
         .gradient-primary {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
         }
@@ -112,7 +101,10 @@
             background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
         }
         
-        /* Efeitos hover */
+        .gradient-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+        
         .hover-lift {
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
@@ -122,7 +114,6 @@
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
         }
         
-        /* Inputs com labels flutuantes */
         .input-group {
             position: relative;
             margin-bottom: 1.5rem;
@@ -145,7 +136,6 @@
             color: #f3f4f6;
         }
         
-        /* Scroll personalizado */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -169,11 +159,6 @@
             background: #475569;
         }
         
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
-        
-        /* Toast */
         .toast {
             position: fixed;
             top: 1rem;
@@ -188,82 +173,10 @@
         }
         
         @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
         
-        /* Tooltip */
-        .tooltip-ativo {
-            position: fixed;
-            background: #1f2937;
-            color: white;
-            padding: 0.5rem 0.75rem;
-            border-radius: 0.375rem;
-            font-size: 0.875rem;
-            max-width: 16rem;
-            z-index: 50;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            animation: fadeInTooltip 0.2s ease;
-        }
-        
-        @keyframes fadeInTooltip {
-            from {
-                opacity: 0;
-                transform: translateY(5px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        /* Progress Ring */
-        .progress-ring {
-            transform: rotate(-90deg);
-        }
-        
-        .progress-ring__circle {
-            stroke-dasharray: 283;
-            stroke-dashoffset: 283;
-            transition: stroke-dashoffset 0.5s ease;
-        }
-        
-        /* Step Indicator */
-        .step-indicator {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 2rem;
-            height: 2rem;
-            background: #e5e7eb;
-            color: #6b7280;
-            border-radius: 50%;
-            font-weight: 600;
-            font-size: 0.875rem;
-        }
-        
-        .dark .step-indicator {
-            background: #374151;
-            color: #9ca3af;
-        }
-        
-        .step-indicator.active {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-        }
-        
-        .step-indicator.completed {
-            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
-            color: white;
-        }
-        
-        /* Slider personalizado */
         .custom-slider {
             -webkit-appearance: none;
             width: 100%;
@@ -284,98 +197,6 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
         
-        /* Modal */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            backdrop-filter: blur(4px);
-            animation: fadeInOverlay 0.3s ease;
-        }
-        
-        @keyframes fadeInOverlay {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        .modal-content {
-            background: white;
-            border-radius: 1rem;
-            max-width: 42rem;
-            width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
-            animation: slideUpModal 0.3s ease;
-        }
-        
-        .dark .modal-content {
-            background: var(--dark-card);
-        }
-        
-        @keyframes slideUpModal {
-            from {
-                transform: translateY(20px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-        
-        /* Animações de loading */
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        
-        .pulse-animation {
-            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-        
-        /* Responsividade para gráficos */
-        .chart-container {
-            position: relative;
-            width: 100%;
-        }
-        
-        .chart-container-sm {
-            height: 12rem;
-        }
-        
-        .chart-container-md {
-            height: 18rem;
-        }
-        
-        .chart-container-lg {
-            height: 24rem;
-        }
-        
-        /* Ajustes para impressão */
-        @media print {
-            .no-print {
-                display: none !important;
-            }
-            
-            body {
-                background: white !important;
-                color: black !important;
-            }
-            
-            .glass-card {
-                background: white !important;
-                border: 1px solid #e5e7eb !important;
-            }
-        }
-        
-        /* WhatsApp flutuante */
         .whatsapp-float {
             position: fixed;
             width: 3.5rem;
@@ -402,153 +223,159 @@
             box-shadow: 0 6px 16px rgba(37, 211, 102, 0.4);
         }
         
-        /* Badge Brayan */
-        .brayan-badge {
-            background: linear-gradient(135deg, #1e3a8a 0%, var(--primary) 100%);
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            white-space: nowrap;
+        .chart-container {
+            position: relative;
+            width: 100%;
         }
         
-        /* Melhorias de foco para acessibilidade */
-        :focus-visible {
-            outline: 2px solid var(--primary);
-            outline-offset: 2px;
+        .chart-container-sm {
+            height: 12rem;
         }
         
-        /* Ajustes para mobile */
+        .chart-container-md {
+            height: 18rem;
+        }
+        
+        .chart-container-lg {
+            height: 24rem;
+        }
+        
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 1rem;
+            max-width: 42rem;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .dark .modal-content {
+            background: var(--dark-card);
+        }
+        
         @media (max-width: 768px) {
-            .modal-content {
-                width: 95%;
-                margin: 1rem;
-            }
-            
             .whatsapp-float {
                 width: 3rem;
                 height: 3rem;
                 font-size: 1.25rem;
-                bottom: 1rem;
-                right: 1rem;
-            }
-            
-            .step-indicator {
-                width: 1.5rem;
-                height: 1.5rem;
-                font-size: 0.75rem;
             }
         }
     </style>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-    <!-- Toast de Mensagens -->
+    <!-- Toast -->
     <div id="toast" class="toast"></div>
 
-    <!-- Botão Flutuante do WhatsApp -->
+    <!-- WhatsApp -->
     <a href="https://wa.me/5521991577383?text=Olá!%20Gostaria%20de%20saber%20mais%20sobre%20os%20serviços%20da%20Brayan%20Contabilidade%20para%20MEI." 
        class="whatsapp-float no-print" 
        target="_blank"
        rel="noopener noreferrer"
-       aria-label="Fale conosco no WhatsApp"
-       title="Fale conosco no WhatsApp">
+       aria-label="Fale conosco no WhatsApp">
         <i class="fab fa-whatsapp"></i>
     </a>
 
-    <!-- Header Superior -->
+    <!-- Header -->
     <header class="gradient-primary text-white py-4 px-4 md:px-6 shadow-lg">
         <div class="max-w-7xl mx-auto">
             <div class="flex flex-col md:flex-row justify-between items-center gap-4">
                 <div class="flex items-center gap-3">
                     <div class="bg-white/20 p-2 rounded-xl backdrop-blur-sm">
-                        <i class="fas fa-calculator text-2xl" aria-hidden="true"></i>
+                        <i class="fas fa-calculator text-2xl"></i>
                     </div>
                     <div>
                         <h1 class="text-xl md:text-2xl font-bold">Calculadora MEI Premium</h1>
                         <p class="text-blue-100 text-sm">Ferramenta exclusiva da <span class="font-bold">Brayan Contabilidade</span></p>
                     </div>
-                    <div class="brayan-badge ml-2 md:ml-4">
-                        <i class="fas fa-certificate mr-1" aria-hidden="true"></i> Brayan Contabilidade
+                    <div class="bg-gradient-to-r from-blue-900 to-blue-700 text-white px-3 py-1 rounded-full text-sm font-bold ml-2 md:ml-4">
+                        <i class="fas fa-certificate mr-1"></i> Brayan Contabilidade
                     </div>
                 </div>
                 <div class="flex items-center gap-3">
                     <button onclick="toggleDarkMode()" 
-                            class="bg-white/20 hover:bg-white/30 p-2 rounded-lg transition focus:outline-none focus:ring-2 focus:ring-white/50"
-                            aria-label="Alternar modo escuro"
-                            title="Alternar modo escuro">
-                        <i id="darkModeIcon" class="fas fa-moon" aria-hidden="true"></i>
+                            class="bg-white/20 hover:bg-white/30 p-2 rounded-lg transition"
+                            aria-label="Alternar modo escuro">
+                        <i id="darkModeIcon" class="fas fa-moon"></i>
                     </button>
                     <button onclick="saveProgress()" 
-                            class="bg-white/20 hover:bg-white/30 px-3 md:px-4 py-2 rounded-lg text-sm font-medium transition focus:outline-none focus:ring-2 focus:ring-white/50">
-                        <i class="fas fa-save mr-1 md:mr-2" aria-hidden="true"></i>Salvar
+                            class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition">
+                        <i class="fas fa-save mr-2"></i>Salvar
                     </button>
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- Progresso do Wizard -->
+    <!-- Progresso -->
     <div class="bg-white dark:bg-gray-800 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 md:px-6 py-3 md:py-4">
+        <div class="max-w-7xl mx-auto px-4 md:px-6 py-4">
             <div class="flex items-center justify-between overflow-x-auto pb-2">
                 <div class="flex items-center min-w-max">
-                    <div class="step-indicator completed">
-                        <i class="fas fa-check" aria-hidden="true"></i>
+                    <div class="w-8 h-8 rounded-full bg-green-500 text-white flex items-center justify-center">
+                        <i class="fas fa-check"></i>
                     </div>
                     <div class="hidden md:block ml-2">
                         <div class="text-sm font-medium text-gray-800 dark:text-gray-200">Dados Básicos</div>
-                        <div class="text-xs text-gray-700 dark:text-gray-300">Informações iniciais</div>
                     </div>
                 </div>
                 
-                <div class="h-1 flex-1 mx-2 md:mx-4 bg-gray-200 dark:bg-gray-700 relative min-w-[20px]">
-                    <div id="progressBar" class="h-full gradient-primary rounded-full transition-all duration-500" style="width: 0%" aria-label="Progresso da análise" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="h-1 flex-1 mx-4 bg-gray-200 dark:bg-gray-700 relative">
+                    <div id="progressBar" class="h-full gradient-primary rounded-full transition-all duration-500" style="width: 0%"></div>
                 </div>
                 
                 <div class="flex items-center min-w-max">
-                    <div class="step-indicator active">
+                    <div class="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center">
                         2
                     </div>
                     <div class="hidden md:block ml-2">
                         <div class="text-sm font-medium text-gray-800 dark:text-gray-200">Custos</div>
-                        <div class="text-xs text-gray-700 dark:text-gray-300">Análise de gastos</div>
                     </div>
                 </div>
                 
-                <div class="h-1 flex-1 mx-2 md:mx-4 bg-gray-200 dark:bg-gray-700 min-w-[20px]"></div>
+                <div class="h-1 flex-1 mx-4 bg-gray-200 dark:bg-gray-700"></div>
                 
                 <div class="flex items-center min-w-max">
-                    <div class="step-indicator">
+                    <div class="w-8 h-8 rounded-full bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 flex items-center justify-center">
                         3
                     </div>
                     <div class="hidden md:block ml-2">
                         <div class="text-sm font-medium text-gray-800 dark:text-gray-200">Precificação</div>
-                        <div class="text-xs text-gray-700 dark:text-gray-300">Estratégias de preço</div>
                     </div>
                 </div>
                 
-                <div class="h-1 flex-1 mx-2 md:mx-4 bg-gray-200 dark:bg-gray-700 min-w-[20px]"></div>
+                <div class="h-1 flex-1 mx-4 bg-gray-200 dark:bg-gray-700"></div>
                 
                 <div class="flex items-center min-w-max">
-                    <div class="step-indicator">
+                    <div class="w-8 h-8 rounded-full bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 flex items-center justify-center">
                         4
                     </div>
                     <div class="hidden md:block ml-2">
                         <div class="text-sm font-medium text-gray-800 dark:text-gray-200">Resultados</div>
-                        <div class="text-xs text-gray-700 dark:text-gray-300">Análise financeira</div>
                     </div>
                 </div>
                 
-                <div class="h-1 flex-1 mx-2 md:mx-4 bg-gray-200 dark:bg-gray-700 min-w-[20px]"></div>
+                <div class="h-1 flex-1 mx-4 bg-gray-200 dark:bg-gray-700"></div>
                 
                 <div class="flex items-center min-w-max">
-                    <div class="step-indicator">
+                    <div class="w-8 h-8 rounded-full bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 flex items-center justify-center">
                         5
                     </div>
                     <div class="hidden md:block ml-2">
                         <div class="text-sm font-medium text-gray-800 dark:text-gray-200">Projeções</div>
-                        <div class="text-xs text-gray-700 dark:text-gray-300">Cenários futuros</div>
                     </div>
                 </div>
             </div>
@@ -557,82 +384,111 @@
 
     <!-- Conteúdo Principal -->
     <main class="max-w-7xl mx-auto p-4 md:p-6">
-        <!-- Navegação por Tabs -->
+        <!-- Navegação -->
         <nav class="flex flex-wrap gap-2 mb-6 no-print" aria-label="Navegação principal">
             <button onclick="openTab('dashboard')" 
                     id="tabDashboard" 
-                    class="tab-btn px-3 md:px-4 py-2 md:py-3 rounded-xl font-medium gradient-primary text-white shadow-md hover-lift focus:outline-none focus:ring-2 focus:ring-primary/50"
-                    aria-controls="dashboard"
-                    aria-selected="true">
-                <i class="fas fa-tachometer-alt mr-2" aria-hidden="true"></i>Dashboard
+                    class="tab-btn px-4 py-3 rounded-xl font-medium gradient-primary text-white shadow-md hover-lift">
+                <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
             </button>
             <button onclick="openTab('dados')" 
                     id="tabDados" 
-                    class="tab-btn px-3 md:px-4 py-2 md:py-3 rounded-xl font-medium bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300 hover-lift focus:outline-none focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-600"
-                    aria-controls="dados"
-                    aria-selected="false">
-                <i class="fas fa-edit mr-2" aria-hidden="true"></i>Dados Básicos
+                    class="tab-btn px-4 py-3 rounded-xl font-medium bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300 hover-lift">
+                <i class="fas fa-edit mr-2"></i>Dados Básicos
             </button>
             <button onclick="openTab('custos')" 
                     id="tabCustos" 
-                    class="tab-btn px-3 md:px-4 py-2 md:py-3 rounded-xl font-medium bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300 hover-lift focus:outline-none focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-600"
-                    aria-controls="custos"
-                    aria-selected="false">
-                <i class="fas fa-money-bill-wave mr-2" aria-hidden="true"></i>Custos
+                    class="tab-btn px-4 py-3 rounded-xl font-medium bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300 hover-lift">
+                <i class="fas fa-money-bill-wave mr-2"></i>Custos
             </button>
             <button onclick="openTab('precificacao')" 
                     id="tabPrecificacao" 
-                    class="tab-btn px-3 md:px-4 py-2 md:py-3 rounded-xl font-medium bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300 hover-lift focus:outline-none focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-600"
-                    aria-controls="precificacao"
-                    aria-selected="false">
-                <i class="fas fa-tags mr-2" aria-hidden="true"></i>Precificação
+                    class="tab-btn px-4 py-3 rounded-xl font-medium bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300 hover-lift">
+                <i class="fas fa-tags mr-2"></i>Precificação
             </button>
             <button onclick="openTab('mercado')" 
                     id="tabMercado" 
-                    class="tab-btn px-3 md:px-4 py-2 md:py-3 rounded-xl font-medium bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300 hover-lift focus:outline-none focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-600"
-                    aria-controls="mercado"
-                    aria-selected="false">
-                <i class="fas fa-chart-bar mr-2" aria-hidden="true"></i>Mercado
+                    class="tab-btn px-4 py-3 rounded-xl font-medium bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300 hover-lift">
+                <i class="fas fa-chart-bar mr-2"></i>Mercado
             </button>
             <button onclick="openTab('resultados')" 
                     id="tabResultados" 
-                    class="tab-btn px-3 md:px-4 py-2 md:py-3 rounded-xl font-medium bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300 hover-lift focus:outline-none focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-600"
-                    aria-controls="resultados"
-                    aria-selected="false">
-                <i class="fas fa-calculator mr-2" aria-hidden="true"></i>Resultados
+                    class="tab-btn px-4 py-3 rounded-xl font-medium bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300 hover-lift">
+                <i class="fas fa-calculator mr-2"></i>Resultados
             </button>
             <button onclick="openTab('graficos')" 
                     id="tabGraficos" 
-                    class="tab-btn px-3 md:px-4 py-2 md:py-3 rounded-xl font-medium bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300 hover-lift focus:outline-none focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-600"
-                    aria-controls="graficos"
-                    aria-selected="false">
-                <i class="fas fa-chart-pie mr-2" aria-hidden="true"></i>Gráficos
+                    class="tab-btn px-4 py-3 rounded-xl font-medium bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300 hover-lift">
+                <i class="fas fa-chart-pie mr-2"></i>Gráficos
+            </button>
+            <button onclick="openTab('projecoes')" 
+                    id="tabProjecoes" 
+                    class="tab-btn px-4 py-3 rounded-xl font-medium bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300 hover-lift">
+                <i class="fas fa-chart-line mr-2"></i>Projeções
             </button>
             <button onclick="openTab('recomendacoes')" 
                     id="tabRecomendacoes" 
-                    class="tab-btn px-3 md:px-4 py-2 md:py-3 rounded-xl font-medium bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300 hover-lift focus:outline-none focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-600"
-                    aria-controls="recomendacoes"
-                    aria-selected="false">
-                <i class="fas fa-bullseye mr-2" aria-hidden="true"></i>Plano de Ação
+                    class="tab-btn px-4 py-3 rounded-xl font-medium bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300 hover-lift">
+                <i class="fas fa-bullseye mr-2"></i>Plano de Ação
             </button>
         </nav>
 
         <!-- Container das Tabs -->
         <div id="conteudo">
-            <!-- Dashboard Inicial -->
-            <section id="dashboard" class="tab-content active" role="tabpanel" aria-labelledby="tabDashboard">
-                <div class="glass-card p-4 md:p-6 mb-6">
+            <!-- Dashboard -->
+            <section id="dashboard" class="tab-content active">
+                <div class="glass-card p-6 mb-6">
                     <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-4 gap-4">
                         <div>
-                            <h2 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-2">📊 Dashboard - Brayan Contabilidade</h2>
+                            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">📊 Dashboard - Brayan Contabilidade</h2>
                             <p class="text-gray-800 dark:text-gray-300">
-                                Ferramenta exclusiva da <span class="font-bold text-blue-700 dark:text-blue-400">Brayan Contabilidade</span> para calcular preços, 
-                                analisar custos e planejar o crescimento do seu negócio MEI.
+                                Ferramenta exclusiva para calcular preços, analisar custos e planejar o crescimento do seu negócio MEI.
                             </p>
                         </div>
                         <button onclick="openTab('dados')" 
-                                class="px-4 py-2 md:px-6 md:py-3 gradient-primary text-white rounded-lg hover-lift font-medium focus:outline-none focus:ring-2 focus:ring-primary/50 w-full md:w-auto">
-                            <i class="fas fa-play mr-2" aria-hidden="true"></i>Começar Agora
+                                class="px-6 py-3 gradient-primary text-white rounded-lg hover-lift font-medium w-full md:w-auto">
+                            <i class="fas fa-play mr-2"></i>Começar Agora
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Cenários Demonstrativos -->
+                <div class="glass-card p-6 mb-6">
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">🎭 Cenários Demonstrativos - Brayan Contabilidade</h3>
+                    <p class="text-gray-800 dark:text-gray-300 mb-4">Clique em um cenário para carregar dados de exemplo e entender como funciona:</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <button onclick="carregarCenario('artesanato')" 
+                                class="p-4 bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 rounded-xl hover-lift border border-purple-200 dark:border-purple-800">
+                            <div class="font-bold text-purple-800 dark:text-purple-300 mb-2">🎨 Artesanato MEI</div>
+                            <div class="text-sm text-gray-800 dark:text-gray-300">
+                                <div>• Produto: Vaso de Cerâmica</div>
+                                <div>• Custo Unitário: R$ 25</div>
+                                <div>• Preço Sugerido: R$ 75</div>
+                                <div>• Margem: 66%</div>
+                            </div>
+                        </button>
+                        
+                        <button onclick="carregarCenario('consultoria')" 
+                                class="p-4 bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-xl hover-lift border border-blue-200 dark:border-blue-800">
+                            <div class="font-bold text-blue-800 dark:text-blue-300 mb-2">📊 Consultoria MEI</div>
+                            <div class="text-sm text-gray-800 dark:text-gray-300">
+                                <div>• Serviço: Consultoria Contábil</div>
+                                <div>• Custo/Hora: R$ 30</div>
+                                <div>• Preço Sugerido: R$ 150/h</div>
+                                <div>• Margem: 80%</div>
+                            </div>
+                        </button>
+                        
+                        <button onclick="carregarCenario('alimentos')" 
+                                class="p-4 bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 rounded-xl hover-lift border border-green-200 dark:border-green-800">
+                            <div class="font-bold text-green-800 dark:text-green-300 mb-2">🍕 Alimentos MEI</div>
+                            <div class="text-sm text-gray-800 dark:text-gray-300">
+                                <div>• Produto: Bolo Artesanal</div>
+                                <div>• Custo Unitário: R$ 12</div>
+                                <div>• Preço Sugerido: R$ 35</div>
+                                <div>• Margem: 65%</div>
+                            </div>
                         </button>
                     </div>
                 </div>
@@ -640,59 +496,59 @@
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <!-- Resumo Rápido -->
                     <div class="lg:col-span-2">
-                        <div class="glass-card p-4 md:p-6">
-                            <h2 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-4">📊 Visão Geral do Seu Negócio</h2>
-                            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6">
-                                <div class="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 p-3 md:p-4 rounded-xl">
-                                    <div class="text-xl md:text-2xl font-bold text-blue-700 dark:text-blue-400" id="dashFaturamento">R$ 0</div>
-                                    <div class="text-xs md:text-sm text-gray-800 dark:text-gray-300">Faturamento Mensal</div>
+                        <div class="glass-card p-6">
+                            <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">📊 Visão Geral do Seu Negócio</h2>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                                <div class="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 p-4 rounded-xl">
+                                    <div class="text-2xl font-bold text-blue-700 dark:text-blue-400" id="dashFaturamento">R$ 0</div>
+                                    <div class="text-sm text-gray-800 dark:text-gray-300">Faturamento Mensal</div>
                                 </div>
-                                <div class="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-800/30 p-3 md:p-4 rounded-xl">
-                                    <div class="text-xl md:text-2xl font-bold text-green-700 dark:text-green-400" id="dashLucro">R$ 0</div>
-                                    <div class="text-xs md:text-sm text-gray-800 dark:text-gray-300">Lucro Mensal</div>
+                                <div class="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-800/30 p-4 rounded-xl">
+                                    <div class="text-2xl font-bold text-green-700 dark:text-green-400" id="dashLucro">R$ 0</div>
+                                    <div class="text-sm text-gray-800 dark:text-gray-300">Lucro Mensal</div>
                                 </div>
-                                <div class="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/30 p-3 md:p-4 rounded-xl">
-                                    <div class="text-xl md:text-2xl font-bold text-purple-700 dark:text-purple-400" id="dashMargem">0%</div>
-                                    <div class="text-xs md:text-sm text-gray-800 dark:text-gray-300">Margem de Lucro</div>
+                                <div class="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/30 p-4 rounded-xl">
+                                    <div class="text-2xl font-bold text-purple-700 dark:text-purple-400" id="dashMargem">0%</div>
+                                    <div class="text-sm text-gray-800 dark:text-gray-300">Margem de Lucro</div>
                                 </div>
-                                <div class="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/30 dark:to-orange-800/30 p-3 md:p-4 rounded-xl">
-                                    <div class="text-xl md:text-2xl font-bold text-orange-700 dark:text-orange-400" id="dashPontoEquilibrio">0</div>
-                                    <div class="text-xs md:text-sm text-gray-800 dark:text-gray-300">Ponto de Equilíbrio</div>
+                                <div class="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/30 dark:to-orange-800/30 p-4 rounded-xl">
+                                    <div class="text-2xl font-bold text-orange-700 dark:text-orange-400" id="dashPontoEquilibrio">0</div>
+                                    <div class="text-sm text-gray-800 dark:text-gray-300">Ponto de Equilíbrio</div>
                                 </div>
                             </div>
                             
                             <div class="chart-container chart-container-md">
-                                <canvas id="dashGraficoResumo" role="img" aria-label="Gráfico de faturamento projetado"></canvas>
+                                <canvas id="dashGraficoResumo"></canvas>
                             </div>
                         </div>
                     </div>
                     
                     <!-- Ações Rápidas -->
                     <div>
-                        <div class="glass-card p-4 md:p-6 h-full">
-                            <h3 class="text-lg md:text-xl font-bold text-gray-900 dark:text-white mb-4">🚀 Ações Rápidas</h3>
+                        <div class="glass-card p-6 h-full">
+                            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">🚀 Ações Rápidas</h3>
                             <div class="space-y-3">
                                 <button onclick="openTab('dados')" 
-                                        class="w-full text-left p-3 md:p-4 bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-xl hover-lift border border-blue-200 dark:border-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-300">
+                                        class="w-full text-left p-4 bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-xl hover-lift border border-blue-200 dark:border-blue-800">
                                     <div class="font-medium text-blue-800 dark:text-blue-300">1. Preencher Dados Básicos</div>
-                                    <div class="text-xs md:text-sm text-gray-800 dark:text-gray-300 mt-1">Informações do seu negócio e produto</div>
+                                    <div class="text-sm text-gray-800 dark:text-gray-300 mt-1">Informações do seu negócio e produto</div>
                                 </button>
                                 
                                 <button onclick="openTab('custos')" 
-                                        class="w-full text-left p-3 md:p-4 bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 rounded-xl hover-lift border border-green-200 dark:border-green-800 focus:outline-none focus:ring-2 focus:ring-green-300">
+                                        class="w-full text-left p-4 bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 rounded-xl hover-lift border border-green-200 dark:border-green-800">
                                     <div class="font-medium text-green-800 dark:text-green-300">2. Analisar Custos</div>
-                                    <div class="text-xs md:text-sm text-gray-800 dark:text-gray-300 mt-1">Mapear todos os gastos do negócio</div>
+                                    <div class="text-sm text-gray-800 dark:text-gray-300 mt-1">Mapear todos os gastos do negócio</div>
                                 </button>
                                 
                                 <button onclick="openTab('precificacao')" 
-                                        class="w-full text-left p-3 md:p-4 bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 rounded-xl hover-lift border border-purple-200 dark:border-purple-800 focus:outline-none focus:ring-2 focus:ring-purple-300">
+                                        class="w-full text-left p-4 bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 rounded-xl hover-lift border border-purple-200 dark:border-purple-800">
                                     <div class="font-medium text-purple-800 dark:text-purple-300">3. Definir Preço</div>
-                                    <div class="text-xs md:text-sm text-gray-800 dark:text-gray-300 mt-1">Escolher estratégia de precificação</div>
+                                    <div class="text-sm text-gray-800 dark:text-gray-300 mt-1">Escolher estratégia de precificação</div>
                                 </button>
                                 
                                 <button onclick="calcularTudo()" 
-                                        class="w-full p-3 md:p-4 gradient-primary text-white rounded-xl font-medium hover-lift mt-4 focus:outline-none focus:ring-2 focus:ring-primary/50">
-                                    <i class="fas fa-bolt mr-2" aria-hidden="true"></i> Calcular Tudo Agora
+                                        class="w-full p-4 gradient-primary text-white rounded-xl font-medium hover-lift mt-4">
+                                    <i class="fas fa-bolt mr-2"></i> Calcular Tudo Agora
                                 </button>
                             </div>
                             
@@ -704,7 +560,7 @@
                                         <span id="progressoDados" class="text-gray-900 dark:text-white font-medium">0%</span>
                                     </div>
                                     <div class="h-2 bg-gray-300 dark:bg-gray-700 rounded-full overflow-hidden">
-                                        <div id="progressoBar" class="h-full gradient-primary rounded-full transition-all duration-500" style="width: 0%" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                        <div id="progressoBar" class="h-full gradient-primary rounded-full transition-all duration-500" style="width: 0%"></div>
                                     </div>
                                 </div>
                             </div>
@@ -713,11 +569,11 @@
                 </div>
                 
                 <!-- Cards Informativos -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mt-6">
-                    <div class="glass-card p-4 md:p-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+                    <div class="glass-card p-6">
                         <div class="flex items-center gap-3 mb-4">
                             <div class="gradient-primary p-3 rounded-lg">
-                                <i class="fas fa-lightbulb text-white text-xl" aria-hidden="true"></i>
+                                <i class="fas fa-lightbulb text-white text-xl"></i>
                             </div>
                             <div>
                                 <h4 class="font-bold text-gray-900 dark:text-white">💡 Por que Precificar Corretamente?</h4>
@@ -728,10 +584,10 @@
                         </p>
                     </div>
                     
-                    <div class="glass-card p-4 md:p-6">
+                    <div class="glass-card p-6">
                         <div class="flex items-center gap-3 mb-4">
                             <div class="gradient-success p-3 rounded-lg">
-                                <i class="fas fa-chart-line text-white text-xl" aria-hidden="true"></i>
+                                <i class="fas fa-chart-line text-white text-xl"></i>
                             </div>
                             <div>
                                 <h4 class="font-bold text-gray-900 dark:text-white">📊 Metodologia Completa</h4>
@@ -742,10 +598,10 @@
                         </p>
                     </div>
                     
-                    <div class="glass-card p-4 md:p-6">
+                    <div class="glass-card p-6">
                         <div class="flex items-center gap-3 mb-4">
                             <div class="gradient-warning p-3 rounded-lg">
-                                <i class="fas fa-cogs text-white text-xl" aria-hidden="true"></i>
+                                <i class="fas fa-cogs text-white text-xl"></i>
                             </div>
                             <div>
                                 <h4 class="font-bold text-gray-900 dark:text-white">⚙️ Personalização Total</h4>
@@ -758,10 +614,10 @@
                 </div>
 
                 <!-- Card de Contato -->
-                <div class="glass-card p-4 md:p-6 mt-6 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20">
+                <div class="glass-card p-6 mt-6 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20">
                     <div class="flex flex-col md:flex-row items-center justify-between gap-4">
                         <div class="text-center md:text-left">
-                            <h3 class="text-lg md:text-xl font-bold text-green-900 dark:text-green-300 mb-2">📞 Precisa de Ajuda Profissional?</h3>
+                            <h3 class="text-xl font-bold text-green-900 dark:text-green-300 mb-2">📞 Precisa de Ajuda Profissional?</h3>
                             <p class="text-green-800 dark:text-green-400">
                                 Nossa equipe da <span class="font-bold">Brayan Contabilidade</span> está pronta para te ajudar!
                             </p>
@@ -769,25 +625,25 @@
                         <a href="https://wa.me/5521991577383?text=Olá!%20Gostaria%20de%20saber%20mais%20sobre%20os%20serviços%20da%20Brayan%20Contabilidade%20para%20MEI."
                            target="_blank"
                            rel="noopener noreferrer"
-                           class="px-4 md:px-6 py-2 md:py-3 bg-green-600 hover:bg-green-700 text-white rounded-xl font-medium hover-lift flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-green-500">
-                            <i class="fab fa-whatsapp text-xl" aria-hidden="true"></i>
+                           class="px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-xl font-medium hover-lift flex items-center gap-2">
+                            <i class="fab fa-whatsapp text-xl"></i>
                             <span>Falar com Contador</span>
                         </a>
                     </div>
                 </div>
             </section>
 
-            <!-- Tab 1: Dados Básicos -->
-            <section id="dados" class="tab-content" role="tabpanel" aria-labelledby="tabDados" hidden>
-                <div class="glass-card p-4 md:p-6">
+            <!-- Dados Básicos -->
+            <section id="dados" class="tab-content" hidden>
+                <div class="glass-card p-6">
                     <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-4">
                         <div>
-                            <h2 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">📝 Dados Básicos do Negócio</h2>
+                            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">📝 Dados Básicos do Negócio</h2>
                             <p class="text-gray-800 dark:text-gray-300">Informações fundamentais sobre sua empresa e produto/serviço</p>
                         </div>
                         <div class="flex items-center gap-2">
                             <span class="text-sm text-gray-800 dark:text-gray-300">Preenchimento:</span>
-                            <div class="w-24 md:w-32 h-2 bg-gray-300 dark:bg-gray-700 rounded-full overflow-hidden">
+                            <div class="w-32 h-2 bg-gray-300 dark:bg-gray-700 rounded-full overflow-hidden">
                                 <div id="progressoDadosBar" class="h-full gradient-primary rounded-full transition-all duration-500" style="width: 0%"></div>
                             </div>
                         </div>
@@ -795,59 +651,46 @@
                     
                     <!-- Formulário em Passos -->
                     <div class="mb-8">
-                        <div class="flex gap-2 md:gap-4 mb-6 overflow-x-auto pb-4">
+                        <div class="flex gap-4 mb-6 overflow-x-auto pb-4">
                             <button onclick="mostrarPassoDados(1)" 
                                     id="passoDados1" 
-                                    class="px-3 md:px-4 py-2 rounded-lg bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-300 font-medium whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-blue-300">
-                                <i class="fas fa-building mr-2" aria-hidden="true"></i>Empresa
+                                    class="px-4 py-2 rounded-lg bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-300 font-medium whitespace-nowrap">
+                                <i class="fas fa-building mr-2"></i>Empresa
                             </button>
                             <button onclick="mostrarPassoDados(2)" 
                                     id="passoDados2" 
-                                    class="px-3 md:px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300 font-medium whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-gray-300">
-                                <i class="fas fa-box mr-2" aria-hidden="true"></i>Produto/Serviço
+                                    class="px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300 font-medium whitespace-nowrap">
+                                <i class="fas fa-box mr-2"></i>Produto/Serviço
                             </button>
                             <button onclick="mostrarPassoDados(3)" 
                                     id="passoDados3" 
-                                    class="px-3 md:px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300 font-medium whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-gray-300">
-                                <i class="fas fa-users mr-2" aria-hidden="true"></i>Público-Alvo
+                                    class="px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300 font-medium whitespace-nowrap">
+                                <i class="fas fa-users mr-2"></i>Público-Alvo
                             </button>
                             <button onclick="mostrarPassoDados(4)" 
                                     id="passoDados4" 
-                                    class="px-3 md:px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300 font-medium whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-gray-300">
-                                <i class="fas fa-chart-bar mr-2" aria-hidden="true"></i>Expectativas
+                                    class="px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300 font-medium whitespace-nowrap">
+                                <i class="fas fa-chart-bar mr-2"></i>Expectativas
                             </button>
                         </div>
                         
                         <!-- Passo 1: Empresa -->
                         <div id="conteudoPassoDados1" class="passo-conteudo">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div class="input-group">
                                     <label for="empresaNome" class="floating-label">Nome da Empresa *</label>
                                     <input type="text" 
                                            id="empresaNome" 
-                                           class="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-500 dark:border-gray-400 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition"
+                                           class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition"
                                            placeholder="Ex: Minha Empresa MEI" 
-                                           oninput="atualizarProgresso()"
-                                           aria-required="true">
-                                    <div class="text-xs text-gray-800 dark:text-gray-300 mt-2">Nome comercial do seu negócio</div>
-                                </div>
-                                
-                                <div class="input-group">
-                                    <label for="empresaCnpj" class="floating-label">CNPJ/CPF</label>
-                                    <input type="text" 
-                                           id="empresaCnpj" 
-                                           class="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-500 dark:border-gray-400 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition"
-                                           placeholder="00.000.000/0000-00"
-                                           aria-describedby="cnpjHelp">
-                                    <div id="cnpjHelp" class="text-xs text-gray-800 dark:text-gray-300 mt-2">CNPJ do MEI ou CPF se ainda não tiver</div>
+                                           oninput="atualizarProgresso()">
                                 </div>
                                 
                                 <div class="input-group">
                                     <label for="setorEmpresa" class="floating-label">Setor de Atuação *</label>
                                     <select id="setorEmpresa" 
-                                            class="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-500 dark:border-gray-400 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition" 
-                                            onchange="atualizarProgresso()"
-                                            aria-required="true">
+                                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition" 
+                                            onchange="atualizarProgresso()">
                                         <option value="">Selecione o setor</option>
                                         <option value="alimentacao">🍕 Alimentação</option>
                                         <option value="moda">👗 Moda/Confecção</option>
@@ -860,114 +703,98 @@
                                         <option value="saude">🏥 Saúde & Bem-estar</option>
                                         <option value="construcao">🏗️ Construção Civil</option>
                                     </select>
-                                    <div class="text-xs text-gray-800 dark:text-gray-300 mt-2">Área principal do seu negócio</div>
+                                </div>
+                                
+                                <div class="input-group">
+                                    <label for="empresaCnpj" class="floating-label">CNPJ/CPF</label>
+                                    <input type="text" 
+                                           id="empresaCnpj" 
+                                           class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition"
+                                           placeholder="00.000.000/0000-00">
                                 </div>
                                 
                                 <div class="input-group">
                                     <label for="tempoMercado" class="floating-label">Tempo de Mercado</label>
                                     <select id="tempoMercado" 
-                                            class="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-500 dark:border-gray-400 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition">
+                                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition">
                                         <option value="">Selecione</option>
                                         <option value="iniciante">🚀 Iniciante (menos de 6 meses)</option>
                                         <option value="estabilizando">📈 Estabilizando (6 meses - 2 anos)</option>
                                         <option value="consolidado">🏆 Consolidado (2-5 anos)</option>
                                         <option value="experiente">💎 Experiente (mais de 5 anos)</option>
                                     </select>
-                                    <div class="text-xs text-gray-800 dark:text-gray-300 mt-2">Tempo de atuação no mercado</div>
                                 </div>
                             </div>
                         </div>
                         
                         <!-- Passo 2: Produto/Serviço -->
                         <div id="conteudoPassoDados2" class="passo-conteudo hidden">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div class="input-group">
                                     <label for="nomeProduto" class="floating-label">Nome do Produto/Serviço *</label>
                                     <input type="text" 
                                            id="nomeProduto" 
-                                           class="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-500 dark:border-gray-400 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition"
+                                           class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition"
                                            placeholder="Ex: Camiseta Personalizada Premium" 
-                                           oninput="atualizarProgresso()"
-                                           aria-required="true">
-                                    <div class="text-xs text-gray-800 dark:text-gray-300 mt-2">Nome comercial do que você vende</div>
+                                           oninput="atualizarProgresso()">
                                 </div>
                                 
                                 <div class="input-group">
                                     <label for="categoriaProduto" class="floating-label">Categoria</label>
                                     <select id="categoriaProduto" 
-                                            class="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-500 dark:border-gray-400 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition">
+                                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition">
                                         <option value="">Selecione a categoria</option>
                                         <option value="produto_fisico">📦 Produto Físico</option>
                                         <option value="servico">🔧 Serviço</option>
                                         <option value="digital">💾 Produto Digital</option>
                                         <option value="assessoria">📊 Assessoria/Consultoria</option>
                                     </select>
-                                    <div class="text-xs text-gray-800 dark:text-gray-300 mt-2">Tipo do seu produto/serviço</div>
                                 </div>
                                 
                                 <div class="md:col-span-2 input-group">
                                     <label for="descricaoProduto" class="floating-label">Descrição Detalhada</label>
                                     <textarea id="descricaoProduto" 
                                               rows="3" 
-                                              class="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-500 dark:border-gray-400 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition"
-                                              placeholder="Descreva seu produto/serviço, benefícios, diferenciais..."
-                                              aria-describedby="descricaoHelp"></textarea>
-                                    <div id="descricaoHelp" class="text-xs text-gray-800 dark:text-gray-300 mt-2">Destaque o que torna seu produto único</div>
+                                              class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition"
+                                              placeholder="Descreva seu produto/serviço, benefícios, diferenciais..."></textarea>
                                 </div>
                                 
                                 <div class="input-group">
                                     <label for="unidadeMedida" class="floating-label">Unidade de Medida</label>
                                     <select id="unidadeMedida" 
-                                            class="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-500 dark:border-gray-400 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition">
+                                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition">
                                         <option value="unidade">📦 Unidade</option>
                                         <option value="hora">⏰ Hora</option>
                                         <option value="pacote">🎁 Pacote/Kit</option>
                                         <option value="metro">📏 Metro</option>
                                         <option value="kg">⚖️ Quilograma</option>
                                         <option value="litro">🧴 Litro</option>
-                                        <option value="mes">📅 Mês (assinatura)</option>
                                     </select>
-                                    <div class="text-xs text-gray-800 dark:text-gray-300 mt-2">Como você vende seu produto/serviço</div>
-                                </div>
-                                
-                                <div class="input-group">
-                                    <label for="codigoProduto" class="floating-label">Código/SKU (opcional)</label>
-                                    <input type="text" 
-                                           id="codigoProduto" 
-                                           class="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-500 dark:border-gray-400 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition"
-                                           placeholder="EX: PROD001">
-                                    <div class="text-xs text-gray-800 dark:text-gray-300 mt-2">Código interno para controle</div>
                                 </div>
                             </div>
                         </div>
                         
                         <!-- Passo 3: Público-Alvo -->
                         <div id="conteudoPassoDados3" class="passo-conteudo hidden">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div class="input-group">
                                     <label for="publicoAlvo" class="floating-label">Público-Alvo Principal *</label>
                                     <select id="publicoAlvo" 
-                                            class="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-500 dark:border-gray-400 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition" 
-                                            oninput="atualizarProgresso()"
-                                            aria-required="true">
+                                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition" 
+                                            oninput="atualizarProgresso()">
                                         <option value="">Selecione seu público</option>
                                         <option value="jovens_adultos">👨‍🎓 Jovens e Adultos (18-35)</option>
                                         <option value="adultos">👨‍💼 Adultos (26-45)</option>
                                         <option value="maduros">👨‍🔬 Maduros (46-65)</option>
                                         <option value="familias">👨‍👩‍👧‍👦 Famílias</option>
                                         <option value="empresas">🏢 Empresas (B2B)</option>
-                                        <option value="mulheres">👩 Mulheres</option>
-                                        <option value="homens">👨 Homens</option>
-                                        <option value="criancas">🧒 Crianças</option>
-                                        <option value="idosos">👵 Idosos</option>
                                     </select>
-                                    <div class="text-xs text-gray-800 dark:text-gray-300 mt-2">Quem são seus principais clientes</div>
                                 </div>
                                 
                                 <div class="input-group">
                                     <label for="poderCompra" class="floating-label">Poder de Compra do Cliente</label>
                                     <select id="poderCompra" 
-                                            class="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-500 dark:border-gray-400 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition">
+                                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition">
                                         <option value="">Selecione o poder de compra</option>
                                         <option value="baixo">💰 Baixo (até R$ 100)</option>
                                         <option value="medio_baixo">💰💰 Médio-baixo (R$ 100-300)</option>
@@ -975,36 +802,21 @@
                                         <option value="medio_alto">💰💰💰💰 Médio-alto (R$ 800-2.000)</option>
                                         <option value="alto">💰💰💰💰💰 Alto (acima de R$ 2.000)</option>
                                     </select>
-                                    <div class="text-xs text-gray-800 dark:text-gray-300 mt-2">Quanto seu cliente pode pagar</div>
                                 </div>
                                 
                                 <div class="md:col-span-2 input-group">
                                     <label for="caracteristicasPublico" class="floating-label">Características do Público-Alvo</label>
                                     <textarea id="caracteristicasPublico" 
                                               rows="2" 
-                                              class="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-500 dark:border-gray-400 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition"
+                                              class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition"
                                               placeholder="Ex: Valorizam qualidade, sustentabilidade, preço justo..."></textarea>
-                                    <div class="text-xs text-gray-800 dark:text-gray-300 mt-2">O que é importante para seus clientes</div>
-                                </div>
-                                
-                                <div class="input-group">
-                                    <label for="localizacaoPublico" class="floating-label">Localização Principal</label>
-                                    <select id="localizacaoPublico" 
-                                            class="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-500 dark:border-gray-400 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition">
-                                        <option value="">Selecione a localização</option>
-                                        <option value="local">📍 Local/Cidade</option>
-                                        <option value="regional">🗺️ Regional</option>
-                                        <option value="nacional">🇧🇷 Nacional</option>
-                                        <option value="internacional">🌍 Internacional</option>
-                                    </select>
-                                    <div class="text-xs text-gray-800 dark:text-gray-300 mt-2">Onde seus clientes estão</div>
                                 </div>
                             </div>
                         </div>
                         
                         <!-- Passo 4: Expectativas -->
                         <div id="conteudoPassoDados4" class="passo-conteudo hidden">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div class="input-group">
                                     <label for="qtdVendaMensal" class="floating-label">Quantidade Mensal Esperada *</label>
                                     <input type="number" 
@@ -1012,23 +824,19 @@
                                            value="100" 
                                            min="1" 
                                            step="1"
-                                           class="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-500 dark:border-gray-400 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition" 
-                                           oninput="atualizarProgresso()"
-                                           aria-required="true">
-                                    <div class="text-xs text-gray-800 dark:text-gray-300 mt-2">Unidades que espera vender por mês</div>
+                                           class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition" 
+                                           oninput="atualizarProgresso()">
                                 </div>
                                 
                                 <div class="input-group">
                                     <label for="sazonalidade" class="floating-label">Sazonalidade</label>
                                     <select id="sazonalidade" 
-                                            class="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-500 dark:border-gray-400 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition">
+                                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition">
                                         <option value="constante">📅 Constante o ano todo</option>
                                         <option value="alta_natal">🎄 Alta no Natal/Fim de Ano</option>
                                         <option value="alta_ferias">🏖️ Alta nas Férias</option>
                                         <option value="especifica">🎯 Alta em datas específicas</option>
-                                        <option value="variavel">📊 Muito variável</option>
                                     </select>
-                                    <div class="text-xs text-gray-800 dark:text-gray-300 mt-2">Como as vendas variam no ano</div>
                                 </div>
                                 
                                 <div class="input-group">
@@ -1039,8 +847,7 @@
                                            min="0" 
                                            max="100" 
                                            step="1"
-                                           class="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-500 dark:border-gray-400 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition">
-                                    <div class="text-xs text-gray-800 dark:text-gray-300 mt-2">Crescimento mensal esperado</div>
+                                           class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition">
                                 </div>
                                 
                                 <div class="input-group">
@@ -1050,14 +857,13 @@
                                            value="10000" 
                                            min="0" 
                                            step="100"
-                                           class="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-500 dark:border-gray-400 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition">
-                                    <div class="text-xs text-gray-800 dark:text-gray-300 mt-2">Faturamento mensal desejado</div>
+                                           class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition">
                                 </div>
                             </div>
                             
                             <div class="mt-6 p-4 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 rounded-xl">
                                 <div class="flex items-center gap-3 mb-2">
-                                    <i class="fas fa-lightbulb text-blue-700 dark:text-blue-400" aria-hidden="true"></i>
+                                    <i class="fas fa-lightbulb text-blue-700 dark:text-blue-400"></i>
                                     <h4 class="font-medium text-blue-900 dark:text-blue-300">💡 Dica da Brayan Contabilidade</h4>
                                 </div>
                                 <p class="text-sm text-blue-800 dark:text-blue-400">
@@ -1070,50 +876,55 @@
                     <!-- Navegação entre Passos -->
                     <div class="flex flex-col md:flex-row justify-between pt-6 border-t border-gray-300 dark:border-gray-700 gap-4">
                         <button onclick="voltarPassoDados()" 
-                                class="px-4 md:px-6 py-2 md:py-3 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300 rounded-xl font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition focus:outline-none focus:ring-2 focus:ring-gray-300 order-2 md:order-1">
-                            <i class="fas fa-arrow-left mr-2" aria-hidden="true"></i> Voltar
+                                class="px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300 rounded-xl font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition order-2 md:order-1">
+                            <i class="fas fa-arrow-left mr-2"></i> Voltar
                         </button>
                         
                         <div class="flex gap-3 order-1 md:order-2">
                             <button onclick="salvarRascunho()" 
-                                    class="px-4 md:px-6 py-2 md:py-3 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300 rounded-xl font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition focus:outline-none focus:ring-2 focus:ring-gray-300">
-                                <i class="fas fa-save mr-2" aria-hidden="true"></i> Salvar Rascunho
+                                    class="px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300 rounded-xl font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition">
+                                <i class="fas fa-save mr-2"></i> Salvar Rascunho
                             </button>
                             
                             <button onclick="avancarPassoDados()" 
                                     id="btnAvancarDados" 
-                                    class="px-4 md:px-6 py-2 md:py-3 gradient-primary text-white rounded-xl font-medium hover-lift focus:outline-none focus:ring-2 focus:ring-primary/50">
-                                Continuar <i class="fas fa-arrow-right ml-2" aria-hidden="true"></i>
+                                    class="px-6 py-3 gradient-primary text-white rounded-xl font-medium hover-lift">
+                                Continuar <i class="fas fa-arrow-right ml-2"></i>
                             </button>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Tab 2: Custos -->
-            <section id="custos" class="tab-content" role="tabpanel" aria-labelledby="tabCustos" hidden>
-                <div class="glass-card p-4 md:p-6">
-                    <h2 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-4">💰 Análise de Custos</h2>
+            <!-- Custos -->
+            <section id="custos" class="tab-content" hidden>
+                <div class="glass-card p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">💰 Análise de Custos Detalhada</h2>
                     <p class="text-gray-800 dark:text-gray-300 mb-6">Preencha todos os custos do seu negócio para uma análise precisa.</p>
                     
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                         <!-- Custos Variáveis -->
                         <div>
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">📦 Custos Variáveis (por unidade)</h3>
                             <div class="space-y-4">
                                 <div class="input-group">
                                     <label for="materiaPrima" class="floating-label">Matéria-prima (R$)</label>
-                                    <input type="number" id="materiaPrima" value="0" min="0" step="0.01" class="w-full px-4 py-3 border border-gray-500 dark:border-gray-400 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition" oninput="calcularCustos()">
+                                    <input type="number" id="materiaPrima" value="0" min="0" step="0.01" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition" oninput="calcularCustos()">
                                 </div>
                                 
                                 <div class="input-group">
                                     <label for="embalagem" class="floating-label">Embalagem (R$)</label>
-                                    <input type="number" id="embalagem" value="0" min="0" step="0.01" class="w-full px-4 py-3 border border-gray-500 dark:border-gray-400 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition" oninput="calcularCustos()">
+                                    <input type="number" id="embalagem" value="0" min="0" step="0.01" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition" oninput="calcularCustos()">
                                 </div>
                                 
                                 <div class="input-group">
                                     <label for="frete" class="floating-label">Frete/Entrega (R$)</label>
-                                    <input type="number" id="frete" value="0" min="0" step="0.01" class="w-full px-4 py-3 border border-gray-500 dark:border-gray-400 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition" oninput="calcularCustos()">
+                                    <input type="number" id="frete" value="0" min="0" step="0.01" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition" oninput="calcularCustos()">
+                                </div>
+                                
+                                <div class="input-group">
+                                    <label for="comissaoVenda" class="floating-label">Comissão de Vendas (%)</label>
+                                    <input type="number" id="comissaoVenda" value="0" min="0" max="100" step="0.1" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition" oninput="calcularCustos()">
                                 </div>
                             </div>
                         </div>
@@ -1124,49 +935,82 @@
                             <div class="space-y-4">
                                 <div class="input-group">
                                     <label for="aluguel" class="floating-label">Aluguel (R$)</label>
-                                    <input type="number" id="aluguel" value="0" min="0" step="0.01" class="w-full px-4 py-3 border border-gray-500 dark:border-gray-400 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition" oninput="calcularCustos()">
+                                    <input type="number" id="aluguel" value="0" min="0" step="0.01" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition" oninput="calcularCustos()">
                                 </div>
                                 
                                 <div class="input-group">
                                     <label for="salarios" class="floating-label">Salários/Pró-labore (R$)</label>
-                                    <input type="number" id="salarios" value="0" min="0" step="0.01" class="w-full px-4 py-3 border border-gray-500 dark:border-gray-400 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition" oninput="calcularCustos()">
+                                    <input type="number" id="salarios" value="0" min="0" step="0.01" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition" oninput="calcularCustos()">
                                 </div>
                                 
                                 <div class="input-group">
                                     <label for="das" class="floating-label">DAS - MEI (R$)</label>
-                                    <input type="number" id="das" value="70.90" min="0" step="0.01" class="w-full px-4 py-3 border border-gray-500 dark:border-gray-400 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition" oninput="calcularCustos()">
+                                    <input type="number" id="das" value="70.90" min="0" step="0.01" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition" oninput="calcularCustos()">
+                                </div>
+                                
+                                <div class="input-group">
+                                    <label for="outrosCustos" class="floating-label">Outros Custos (R$)</label>
+                                    <input type="number" id="outrosCustos" value="0" min="0" step="0.01" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition" oninput="calcularCustos()">
                                 </div>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Resumo dos Custos -->
-                    <div class="mt-8 p-4 md:p-6 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 rounded-xl">
-                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">📊 Resumo dos Custos</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Análise de Margens -->
+                    <div class="mt-6 p-6 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 rounded-xl">
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">📊 Análise de Custos Detalhada</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                             <div class="text-center p-4 bg-white dark:bg-gray-800 rounded-lg">
-                                <div class="text-sm text-gray-800 dark:text-gray-300 mb-1">Custo Unitário Total</div>
+                                <div class="text-sm text-gray-800 dark:text-gray-300 mb-1">Custo Unitário</div>
                                 <div id="resumoCustoUnitario" class="text-xl font-bold text-blue-700 dark:text-blue-400">R$ 0,00</div>
+                                <div class="text-xs text-gray-600 dark:text-gray-400 mt-1">por unidade</div>
                             </div>
                             
                             <div class="text-center p-4 bg-white dark:bg-gray-800 rounded-lg">
                                 <div class="text-sm text-gray-800 dark:text-gray-300 mb-1">Custo Fixo Mensal</div>
                                 <div id="resumoCustoFixo" class="text-xl font-bold text-green-700 dark:text-green-400">R$ 0,00</div>
+                                <div class="text-xs text-gray-600 dark:text-gray-400 mt-1">total mensal</div>
                             </div>
                             
                             <div class="text-center p-4 bg-white dark:bg-gray-800 rounded-lg">
                                 <div class="text-sm text-gray-800 dark:text-gray-300 mb-1">Custo Total Mensal</div>
                                 <div id="resumoCustoTotal" class="text-xl font-bold text-purple-700 dark:text-purple-400">R$ 0,00</div>
+                                <div class="text-xs text-gray-600 dark:text-gray-400 mt-1">para <span id="qtdMensalDisplay">100</span> unidades</div>
+                            </div>
+                            
+                            <div class="text-center p-4 bg-white dark:bg-gray-800 rounded-lg">
+                                <div class="text-sm text-gray-800 dark:text-gray-300 mb-1">Custo Variável %</div>
+                                <div id="percentualVariavel" class="text-xl font-bold text-orange-700 dark:text-orange-400">0%</div>
+                                <div class="text-xs text-gray-600 dark:text-gray-400 mt-1">do custo total</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Recomendações de Custos -->
+                    <div class="mt-6 p-6 bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 rounded-xl">
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">💡 Recomendações da Brayan Contabilidade</h3>
+                        <div class="space-y-2">
+                            <div class="flex items-start">
+                                <i class="fas fa-lightbulb text-yellow-600 dark:text-yellow-400 mt-1 mr-3"></i>
+                                <span class="text-gray-800 dark:text-gray-300">Mantenha os custos variáveis abaixo de 60% do preço de venda</span>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-lightbulb text-yellow-600 dark:text-yellow-400 mt-1 mr-3"></i>
+                                <span class="text-gray-800 dark:text-gray-300">Os custos fixos devem ser cobertos com as primeiras vendas do mês</span>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-lightbulb text-yellow-600 dark:text-yellow-400 mt-1 mr-3"></i>
+                                <span class="text-gray-800 dark:text-gray-300">Revise os custos a cada 3 meses para ajustar os preços</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Tab 3: Precificação -->
-            <section id="precificacao" class="tab-content" role="tabpanel" aria-labelledby="tabPrecificacao" hidden>
-                <div class="glass-card p-4 md:p-6">
-                    <h2 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-4">🏷️ Estratégias de Precificação</h2>
+            <!-- Precificação -->
+            <section id="precificacao" class="tab-content" hidden>
+                <div class="glass-card p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">🏷️ Estratégias de Precificação</h2>
                     <p class="text-gray-800 dark:text-gray-300 mb-6">Escolha o método de precificação mais adequado para seu negócio.</p>
                     
                     <div class="mb-6">
@@ -1209,7 +1053,7 @@
                                 <div id="precoFinalSugerido" class="text-2xl font-bold text-green-700 dark:text-green-400">R$ 0,00</div>
                                 <div class="mt-3">
                                     <label for="precoVendaFinal" class="block text-sm text-gray-800 dark:text-gray-300 mb-2">Defina seu preço final:</label>
-                                    <input type="number" id="precoVendaFinal" value="0" min="0" step="0.01" class="w-full px-4 py-2 border border-gray-500 dark:border-gray-400 rounded-lg bg-white dark:bg-gray-800 focus:border-green-500 focus:ring-2 focus:ring-green-200 outline-none transition text-center text-lg font-bold" oninput="atualizarPrecoFinal(this.value)">
+                                    <input type="number" id="precoVendaFinal" value="0" min="0" step="0.01" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 focus:border-green-500 focus:ring-2 focus:ring-green-200 outline-none transition text-center text-lg font-bold" oninput="atualizarPrecoFinal(this.value)">
                                 </div>
                             </div>
                         </div>
@@ -1217,10 +1061,10 @@
                 </div>
             </section>
 
-            <!-- Tab 4: Mercado -->
-            <section id="mercado" class="tab-content" role="tabpanel" aria-labelledby="tabMercado" hidden>
-                <div class="glass-card p-4 md:p-6">
-                    <h2 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-4">📊 Análise de Mercado</h2>
+            <!-- Mercado -->
+            <section id="mercado" class="tab-content" hidden>
+                <div class="glass-card p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">📊 Análise de Mercado</h2>
                     <p class="text-gray-800 dark:text-gray-300 mb-6">Compare seus preços com a concorrência e analise seu posicionamento.</p>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -1229,21 +1073,21 @@
                             <div class="space-y-4">
                                 <div class="input-group">
                                     <label for="precoMinConcorrencia" class="floating-label">Preço Mínimo (R$)</label>
-                                    <input type="number" id="precoMinConcorrencia" value="0" min="0" step="0.01" class="w-full px-4 py-3 border border-gray-500 dark:border-gray-400 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition">
+                                    <input type="number" id="precoMinConcorrencia" value="0" min="0" step="0.01" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition">
                                 </div>
                                 
                                 <div class="input-group">
                                     <label for="precoMedioConcorrencia" class="floating-label">Preço Médio (R$)</label>
-                                    <input type="number" id="precoMedioConcorrencia" value="0" min="0" step="0.01" class="w-full px-4 py-3 border border-gray-500 dark:border-gray-400 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition">
+                                    <input type="number" id="precoMedioConcorrencia" value="0" min="0" step="0.01" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition">
                                 </div>
                                 
                                 <div class="input-group">
                                     <label for="precoMaxConcorrencia" class="floating-label">Preço Máximo (R$)</label>
-                                    <input type="number" id="precoMaxConcorrencia" value="0" min="0" step="0.01" class="w-full px-4 py-3 border border-gray-500 dark:border-gray-400 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition">
+                                    <input type="number" id="precoMaxConcorrencia" value="0" min="0" step="0.01" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition">
                                 </div>
                                 
-                                <button onclick="analisarConcorrencia()" class="w-full px-4 py-3 gradient-primary text-white rounded-xl font-medium hover-lift focus:outline-none focus:ring-2 focus:ring-primary/50">
-                                    <i class="fas fa-chart-bar mr-2" aria-hidden="true"></i> Analisar Concorrência
+                                <button onclick="analisarConcorrencia()" class="w-full px-4 py-3 gradient-primary text-white rounded-xl font-medium hover-lift">
+                                    <i class="fas fa-chart-bar mr-2"></i> Analisar Concorrência
                                 </button>
                             </div>
                         </div>
@@ -1278,88 +1122,88 @@
                 </div>
             </section>
 
-            <!-- Tab 5: Resultados -->
-            <section id="resultados" class="tab-content" role="tabpanel" aria-labelledby="tabResultados" hidden>
-                <div class="glass-card p-4 md:p-6">
-                    <h2 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-4">📈 Resultados Financeiros</h2>
+            <!-- Resultados -->
+            <section id="resultados" class="tab-content" hidden>
+                <div class="glass-card p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">📈 Resultados Financeiros</h2>
                     <p class="text-gray-800 dark:text-gray-300 mb-6">Veja os resultados da sua precificação e análise de viabilidade.</p>
                     
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                         <div class="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 p-4 rounded-xl text-center">
-                            <div class="text-lg md:text-2xl font-bold text-blue-700 dark:text-blue-400" id="kpiFaturamento">R$ 0</div>
-                            <div class="text-xs md:text-sm text-gray-800 dark:text-gray-300">Faturamento Mensal</div>
+                            <div class="text-2xl font-bold text-blue-700 dark:text-blue-400" id="kpiFaturamento">R$ 0</div>
+                            <div class="text-sm text-gray-800 dark:text-gray-300">Faturamento Mensal</div>
                         </div>
                         
                         <div class="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-800/30 p-4 rounded-xl text-center">
-                            <div class="text-lg md:text-2xl font-bold text-green-700 dark:text-green-400" id="kpiLucro">R$ 0</div>
-                            <div class="text-xs md:text-sm text-gray-800 dark:text-gray-300">Lucro Mensal</div>
+                            <div class="text-2xl font-bold text-green-700 dark:text-green-400" id="kpiLucro">R$ 0</div>
+                            <div class="text-sm text-gray-800 dark:text-gray-300">Lucro Mensal</div>
                         </div>
                         
                         <div class="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/30 p-4 rounded-xl text-center">
-                            <div class="text-lg md:text-2xl font-bold text-purple-700 dark:text-purple-400" id="kpiMargem">0%</div>
-                            <div class="text-xs md:text-sm text-gray-800 dark:text-gray-300">Margem de Lucro</div>
+                            <div class="text-2xl font-bold text-purple-700 dark:text-purple-400" id="kpiMargem">0%</div>
+                            <div class="text-sm text-gray-800 dark:text-gray-300">Margem de Lucro</div>
                         </div>
                         
                         <div class="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/30 dark:to-orange-800/30 p-4 rounded-xl text-center">
-                            <div class="text-lg md:text-2xl font-bold text-orange-700 dark:text-orange-400" id="kpiPontoEquilibrio">0</div>
-                            <div class="text-xs md:text-sm text-gray-800 dark:text-gray-300">Ponto de Equilíbrio</div>
+                            <div class="text-2xl font-bold text-orange-700 dark:text-orange-400" id="kpiPontoEquilibrio">0</div>
+                            <div class="text-sm text-gray-800 dark:text-gray-300">Ponto de Equilíbrio</div>
                         </div>
                     </div>
                     
                     <div class="chart-container chart-container-md">
-                        <canvas id="graficoEvolucaoLucro" role="img" aria-label="Gráfico de evolução do lucro"></canvas>
+                        <canvas id="graficoEvolucaoLucro"></canvas>
                     </div>
                 </div>
             </section>
 
-            <!-- Tab 6: Gráficos -->
-            <section id="graficos" class="tab-content" role="tabpanel" aria-labelledby="tabGraficos" hidden>
-                <div class="glass-card p-4 md:p-6">
-                    <h2 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-4">📊 Gráficos Avançados</h2>
+            <!-- Gráficos -->
+            <section id="graficos" class="tab-content" hidden>
+                <div class="glass-card p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">📊 Gráficos Avançados</h2>
                     <p class="text-gray-800 dark:text-gray-300 mb-6">Visualize seus dados através de gráficos interativos.</p>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">🥧 Composição do Preço</h3>
                             <div class="chart-container chart-container-md">
-                                <canvas id="graficoComposicaoPreco" role="img" aria-label="Gráfico de composição do preço"></canvas>
+                                <canvas id="graficoComposicaoPreco"></canvas>
                             </div>
                         </div>
                         
                         <div>
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">📊 Comparação com Concorrência</h3>
                             <div class="chart-container chart-container-md">
-                                <canvas id="graficoComparacaoConcorrenciaGraficos" role="img" aria-label="Gráfico de comparação com concorrência"></canvas>
+                                <canvas id="graficoComparacaoConcorrenciaGraficos"></canvas>
                             </div>
                         </div>
                         
                         <div>
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">📈 Ponto de Equilíbrio</h3>
                             <div class="chart-container chart-container-md">
-                                <canvas id="graficoPontoEquilibrio" role="img" aria-label="Gráfico de ponto de equilíbrio"></canvas>
+                                <canvas id="graficoPontoEquilibrio"></canvas>
                             </div>
                         </div>
                         
                         <div>
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">💰 Distribuição do Preço</h3>
                             <div class="chart-container chart-container-md">
-                                <canvas id="graficoDistribuicaoPreco" role="img" aria-label="Gráfico de distribuição do preço"></canvas>
+                                <canvas id="graficoDistribuicaoPreco"></canvas>
                             </div>
                         </div>
                     </div>
                     
                     <div class="mt-6 flex justify-center">
-                        <button onclick="exportarTodosGraficos()" class="px-6 py-3 gradient-primary text-white rounded-xl font-medium hover-lift focus:outline-none focus:ring-2 focus:ring-primary/50">
-                            <i class="fas fa-download mr-2" aria-hidden="true"></i> Exportar Todos os Gráficos
+                        <button onclick="exportarTodosGraficos()" class="px-6 py-3 gradient-primary text-white rounded-xl font-medium hover-lift">
+                            <i class="fas fa-download mr-2"></i> Exportar Todos os Gráficos
                         </button>
                     </div>
                 </div>
             </section>
 
-            <!-- Tab 7: Projeções -->
-            <section id="projecoes" class="tab-content" role="tabpanel" aria-labelledby="tabProjecoes" hidden>
-                <div class="glass-card p-4 md:p-6">
-                    <h2 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-4">🔮 Projeções & Cenários</h2>
+            <!-- Projeções -->
+            <section id="projecoes" class="tab-content" hidden>
+                <div class="glass-card p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">🔮 Projeções & Cenários</h2>
                     <p class="text-gray-800 dark:text-gray-300 mb-6">Simule diferentes cenários para o futuro do seu negócio.</p>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -1368,12 +1212,12 @@
                             <div class="space-y-4">
                                 <div class="input-group">
                                     <label for="horizonteProjecao" class="floating-label">Horizonte (meses)</label>
-                                    <input type="number" id="horizonteProjecao" value="12" min="1" max="60" class="w-full px-4 py-3 border border-gray-500 dark:border-gray-400 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition">
+                                    <input type="number" id="horizonteProjecao" value="12" min="1" max="60" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition">
                                 </div>
                                 
                                 <div class="input-group">
                                     <label for="cenarioBase" class="floating-label">Cenário Base</label>
-                                    <select id="cenarioBase" class="w-full px-4 py-3 border border-gray-500 dark:border-gray-400 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition">
+                                    <select id="cenarioBase" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition">
                                         <option value="realista">📊 Realista</option>
                                         <option value="otimista">🚀 Otimista</option>
                                         <option value="pessimista">⚠️ Pessimista</option>
@@ -1382,11 +1226,11 @@
                                 
                                 <div class="input-group">
                                     <label for="taxaCrescimentoProjecao" class="floating-label">Taxa de Crescimento Mensal (%)</label>
-                                    <input type="number" id="taxaCrescimentoProjecao" value="5" min="0" max="100" step="0.1" class="w-full px-4 py-3 border border-gray-500 dark:border-gray-400 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition">
+                                    <input type="number" id="taxaCrescimentoProjecao" value="5" min="0" max="100" step="0.1" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition">
                                 </div>
                                 
-                                <button onclick="atualizarProjecoes()" class="w-full px-4 py-3 gradient-primary text-white rounded-xl font-medium hover-lift focus:outline-none focus:ring-2 focus:ring-primary/50">
-                                    <i class="fas fa-sync-alt mr-2" aria-hidden="true"></i> Atualizar Projeções
+                                <button onclick="atualizarProjecoes()" class="w-full px-4 py-3 gradient-primary text-white rounded-xl font-medium hover-lift">
+                                    <i class="fas fa-sync-alt mr-2"></i> Atualizar Projeções
                                 </button>
                             </div>
                         </div>
@@ -1416,20 +1260,20 @@
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="chart-container chart-container-md">
-                            <canvas id="graficoProjecaoFaturamento" role="img" aria-label="Gráfico de projeção de faturamento"></canvas>
+                            <canvas id="graficoProjecaoFaturamento"></canvas>
                         </div>
                         
                         <div class="chart-container chart-container-md">
-                            <canvas id="graficoProjecaoLucro" role="img" aria-label="Gráfico de projeção de lucro"></canvas>
+                            <canvas id="graficoProjecaoLucro"></canvas>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Tab 8: Recomendações -->
-            <section id="recomendacoes" class="tab-content" role="tabpanel" aria-labelledby="tabRecomendacoes" hidden>
-                <div class="glass-card p-4 md:p-6">
-                    <h2 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-4">🎯 Plano de Ação</h2>
+            <!-- Recomendações -->
+            <section id="recomendacoes" class="tab-content" hidden>
+                <div class="glass-card p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">🎯 Plano de Ação - Brayan Contabilidade</h2>
                     <p class="text-gray-800 dark:text-gray-300 mb-6">Recomendações personalizadas baseadas na sua análise.</p>
                     
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
@@ -1459,7 +1303,7 @@
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">🏷️ Precificação</h3>
                             <ul id="recomendacoesPrecificacao" class="space-y-2">
                                 <li class="flex items-start">
-                                    <i class="fas fa-check-circle text-green-500 mt-1 mr-3" aria-hidden="true"></i>
+                                    <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
                                     <span class="text-gray-800 dark:text-gray-300">Preencha os dados para ver recomendações</span>
                                 </li>
                             </ul>
@@ -1469,7 +1313,7 @@
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">💰 Custos</h3>
                             <ul id="recomendacoesCustos" class="space-y-2">
                                 <li class="flex items-start">
-                                    <i class="fas fa-check-circle text-green-500 mt-1 mr-3" aria-hidden="true"></i>
+                                    <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
                                     <span class="text-gray-800 dark:text-gray-300">Preencha os dados para ver recomendações</span>
                                 </li>
                             </ul>
@@ -1479,7 +1323,7 @@
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">📊 Mercado</h3>
                             <ul id="recomendacoesMercado" class="space-y-2">
                                 <li class="flex items-start">
-                                    <i class="fas fa-check-circle text-green-500 mt-1 mr-3" aria-hidden="true"></i>
+                                    <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
                                     <span class="text-gray-800 dark:text-gray-300">Preencha os dados para ver recomendações</span>
                                 </li>
                             </ul>
@@ -1489,7 +1333,7 @@
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">🚀 Crescimento</h3>
                             <ul id="recomendacoesCrescimento" class="space-y-2">
                                 <li class="flex items-start">
-                                    <i class="fas fa-check-circle text-green-500 mt-1 mr-3" aria-hidden="true"></i>
+                                    <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
                                     <span class="text-gray-800 dark:text-gray-300">Preencha os dados para ver recomendações</span>
                                 </li>
                             </ul>
@@ -1497,9 +1341,10 @@
                     </div>
                     
                     <div class="mt-6 p-4 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 rounded-xl">
-                        <h3 class="text-lg font-bold text-blue-900 dark:text-blue-300 mb-2">💡 Próximos Passos</h3>
+                        <h3 class="text-lg font-bold text-blue-900 dark:text-blue-300 mb-2">💡 Próximos Passos - Brayan Contabilidade</h3>
                         <p class="text-blue-800 dark:text-blue-400">
-                            Execute as recomendações de prioridade alta primeiro. Revise regularmente seus preços e custos para manter a saúde financeira do seu negócio.
+                            Execute as recomendações de prioridade alta primeiro. Revise regularmente seus preços e custos para manter a saúde financeira do seu negócio. 
+                            Entre em contato conosco para uma consultoria personalizada!
                         </p>
                     </div>
                 </div>
@@ -1509,12 +1354,12 @@
 
     <!-- Footer -->
     <footer class="bg-gray-900 text-white py-8 mt-12 print:hidden">
-        <div class="max-w-7xl mx-auto px-4 md:px-6">
+        <div class="max-w-7xl mx-auto px-6">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div>
                     <div class="flex items-center gap-3 mb-4">
                         <div class="gradient-primary p-2 rounded-lg">
-                            <i class="fas fa-calculator text-white" aria-hidden="true"></i>
+                            <i class="fas fa-calculator text-white"></i>
                         </div>
                         <h3 class="text-xl font-bold">Calculadora MEI Premium</h3>
                     </div>
@@ -1528,15 +1373,15 @@
                     <h4 class="text-lg font-bold mb-4">Contato</h4>
                     <ul class="space-y-2 text-gray-300">
                         <li class="flex items-center gap-2">
-                            <i class="fab fa-whatsapp text-green-400" aria-hidden="true"></i>
+                            <i class="fab fa-whatsapp text-green-400"></i>
                             <span>(21) 99157-7383</span>
                         </li>
                         <li class="flex items-center gap-2">
-                            <i class="fas fa-envelope text-blue-400" aria-hidden="true"></i>
+                            <i class="fas fa-envelope text-blue-400"></i>
                             <span>contato@brayancontabilidade.com</span>
                         </li>
                         <li class="flex items-center gap-2">
-                            <i class="fas fa-clock text-yellow-400" aria-hidden="true"></i>
+                            <i class="fas fa-clock text-yellow-400"></i>
                             <span>Seg-Sex: 9h às 18h</span>
                         </li>
                     </ul>
@@ -1558,23 +1403,22 @@
         </div>
     </footer>
 
-    <!-- Modal para Gráficos Ampliados -->
-    <div id="modalGrafico" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitulo" hidden>
-        <div class="modal-content p-4 md:p-6">
+    <!-- Modal -->
+    <div id="modalGrafico" class="modal-overlay" hidden>
+        <div class="modal-content p-6">
             <div class="flex justify-between items-center mb-6">
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white" id="modalTitulo">Gráfico</h3>
                 <button onclick="fecharModal()" 
-                        class="text-gray-800 hover:text-gray-900 dark:hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 rounded-lg p-1"
-                        aria-label="Fechar modal">
-                    <i class="fas fa-times text-2xl" aria-hidden="true"></i>
+                        class="text-gray-800 hover:text-gray-900 dark:hover:text-gray-300">
+                    <i class="fas fa-times text-2xl"></i>
                 </button>
             </div>
             <div class="chart-container chart-container-lg">
-                <canvas id="modalCanvas" role="img" aria-label="Gráfico ampliado"></canvas>
+                <canvas id="modalCanvas"></canvas>
             </div>
             <div class="mt-6 flex justify-end">
                 <button onclick="fecharModal()" 
-                        class="px-6 py-3 bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-300 rounded-xl font-medium hover:bg-gray-400 dark:hover:bg-gray-600 transition focus:outline-none focus:ring-2 focus:ring-gray-300">
+                        class="px-6 py-3 bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-300 rounded-xl font-medium hover:bg-gray-400 dark:hover:bg-gray-600 transition">
                     Fechar
                 </button>
             </div>
@@ -1586,34 +1430,11 @@
     <script src="graficos.js"></script>
     
     <script>
-        // Adicionar a classe de carregamento inicial
         document.body.classList.add('loaded');
         
-        // Configuração de acessibilidade para modais
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 fecharModal();
-            }
-        });
-        
-        // Foco no modal quando aberto
-        document.getElementById('modalGrafico')?.addEventListener('keydown', function(e) {
-            if (e.key === 'Tab') {
-                const focusableElements = this.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-                const firstElement = focusableElements[0];
-                const lastElement = focusableElements[focusableElements.length - 1];
-                
-                if (e.shiftKey) {
-                    if (document.activeElement === firstElement) {
-                        lastElement.focus();
-                        e.preventDefault();
-                    }
-                } else {
-                    if (document.activeElement === lastElement) {
-                        firstElement.focus();
-                        e.preventDefault();
-                    }
-                }
             }
         });
         
@@ -1621,8 +1442,6 @@
         document.querySelectorAll('[title]').forEach(element => {
             element.addEventListener('mouseenter', mostrarTooltip);
             element.addEventListener('mouseleave', esconderTooltip);
-            element.addEventListener('focus', mostrarTooltip);
-            element.addEventListener('blur', esconderTooltip);
         });
     </script>
 </body>
