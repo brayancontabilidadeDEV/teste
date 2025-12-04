@@ -158,4 +158,77 @@ document.addEventListener('DOMContentLoaded', function() {
     } catch (error) {
         console.error('Erro ao criar gráfico 3:', error);
     }
+    function atualizarTodosGraficos() {
+    // Atualizar gráfico de distribuição de preço
+    atualizarGraficoDistribuicaoPreco();
+    
+    // Atualizar gráfico de comparação
+    atualizarGraficoComparacao();
+    
+    // Atualizar gráfico de evolução
+    atualizarGraficoEvolucao();
+    
+    // Atualizar gráfico de ponto de equilíbrio
+    atualizarGraficoPontoEquilibrio();
+}
+
+function atualizarGraficoDistribuicaoPreco() {
+    const custos = dadosNegocio.custos;
+    const preco = parseFloat(document.getElementById('precoVendaFinal').value) || 0;
+    
+    if (!preco || !custos.totalUnitario) return;
+    
+    const ctx = document.getElementById('graficoDistribuicaoPreco');
+    if (!ctx) return;
+    
+    const lucroUnitario = preco - custos.totalUnitario;
+    const impostos = preco * 0.07; // 7% estimado
+    const custoVariavel = custos.variavelUnitario || 0;
+    const custoFixoUnit = custos.fixoUnitario || 0;
+    
+    // Destruir gráfico anterior se existir
+    if (window.graficoDistribuicao) {
+        window.graficoDistribuicao.destroy();
+    }
+    
+    window.graficoDistribuicao = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Custo Variável', 'Custo Fixo', 'Impostos', 'Lucro'],
+            datasets: [{
+                data: [
+                    custoVariavel,
+                    custoFixoUnit,
+                    impostos,
+                    lucroUnitario
+                ],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.8)',
+                    'rgba(54, 162, 235, 0.8)',
+                    'rgba(255, 206, 86, 0.8)',
+                    'rgba(75, 192, 192, 0.8)'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Composição do Preço de Venda'
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const value = context.raw;
+                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                            const percentage = ((value / total) * 100).toFixed(1);
+                            return `${context.label}: R$ ${value.toFixed(2)} (${percentage}%)`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
 });
