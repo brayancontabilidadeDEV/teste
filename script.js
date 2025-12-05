@@ -331,26 +331,44 @@ function aplicarTemplateSetor(setor) {
 
 function selecionarMetodo(metodo) {
     metodoPrecificacaoSelecionado = metodo;
+    
+    // Atualizar texto do método selecionado
     const metodoSelecionadoElement = document.getElementById('metodoSelecionado');
     if (metodoSelecionadoElement) {
-        metodoSelecionadoElement.textContent = metodo.charAt(0).toUpperCase() + metodo.slice(1) + ' (Recomendado)';
+        const nomes = {
+            'markup': 'Markup',
+            'margem': 'Margem de Lucro',
+            'mercado': 'Preço de Mercado',
+            'valor': 'Valor Percebido',
+            'psicologico': 'Preço Psicológico',
+            'recomendacao': 'Recomendação IA'
+        };
+        metodoSelecionadoElement.textContent = nomes[metodo] + ' (Selecionado)';
     }
     
-    // Mostrar configuração específica do método
+    // Esconder TODAS as configurações de métodos primeiro
     document.querySelectorAll('.metodo-config').forEach(div => {
         div.style.display = 'none';
     });
     
-    if (metodo === 'markup') {
-        const configMarkup = document.getElementById('configMetodoMarkup');
-        if (configMarkup) configMarkup.style.display = 'block';
-        atualizarMarkup(document.getElementById('markupInput').value);
+    // Mostrar configuração do método selecionado
+    const configElement = document.getElementById(`configMetodo${metodo.charAt(0).toUpperCase() + metodo.slice(1)}`);
+    if (configElement) {
+        configElement.style.display = 'block';
     }
     
-    // Recalcular
+    // Para o método markup, atualizar valores
+    if (metodo === 'markup') {
+        const markupValue = document.getElementById('markupInput')?.value || 100;
+        atualizarMarkup(markupValue);
+    }
+    
+    // Feedback visual
+    mostrarToast(`Método ${nomes[metodo]} selecionado!`, 'success');
+    
+    // Recalcular precificação
     atualizarPrecificacao();
 }
-
 function atualizarMarkup(valor) {
     const markupSlider = document.getElementById('markupSlider');
     const markupInput = document.getElementById('markupInput');
