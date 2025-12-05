@@ -174,57 +174,190 @@ function inicializarAplicacao() {
     }
 }
 
-// ==================== CÁLCULO DE CUSTOS ====================
+// ==================== CÁLCULO DE CUSTOS COMPLETO ====================
 function calcularCustos() {
     try {
-        console.log('🧮 Calculando custos...');
+        console.log('🧮 Calculando custos completos...');
         
-        // Coletar custos variáveis
+        // ========== CUSTOS VARIÁVEIS (POR UNIDADE) ==========
         const materiaPrima = parseFloat(document.getElementById('materiaPrima')?.value) || 0;
         const embalagem = parseFloat(document.getElementById('embalagem')?.value) || 0;
         const frete = parseFloat(document.getElementById('frete')?.value) || 0;
+        const maoObraDireta = parseFloat(document.getElementById('maoObraDireta')?.value) || 0;
+        const comissoesPercent = parseFloat(document.getElementById('comissoes')?.value) || 0;
+        const outrosVariaveis = parseFloat(document.getElementById('outrosVariaveis')?.value) || 0;
         
-        // Coletar custos fixos
+        // Calcular comissões em valor (será aplicado depois, sobre o preço)
+        const precoVenda = parseFloat(document.getElementById('precoVendaFinal')?.value) || 0;
+        const comissoesValor = precoVenda * (comissoesPercent / 100);
+        
+        // Custo variável unitário total
+        const custoVariavelUnitario = materiaPrima + embalagem + frete + maoObraDireta + outrosVariaveis;
+        
+        // ========== CUSTOS FIXOS (MENAIS) ==========
         const aluguel = parseFloat(document.getElementById('aluguel')?.value) || 0;
         const salarios = parseFloat(document.getElementById('salarios')?.value) || 0;
         const das = parseFloat(document.getElementById('das')?.value) || 70.90;
+        const energia = parseFloat(document.getElementById('energia')?.value) || 0;
+        const internet = parseFloat(document.getElementById('internet')?.value) || 0;
+        const marketing = parseFloat(document.getElementById('marketing')?.value) || 0;
+        const manutencao = parseFloat(document.getElementById('manutencao')?.value) || 0;
+        const seguros = parseFloat(document.getElementById('seguros')?.value) || 0;
+        const outrosFixos = parseFloat(document.getElementById('outrosFixos')?.value) || 0;
         
-        // Quantidade mensal
+        // ========== CUSTOS DE TECNOLOGIA ==========
+        const siteEcommerce = parseFloat(document.getElementById('siteEcommerce')?.value) || 0;
+        const hospedagem = parseFloat(document.getElementById('hospedagem')?.value) || 0;
+        const marketingDigital = parseFloat(document.getElementById('marketingDigital')?.value) || 0;
+        const softwares = parseFloat(document.getElementById('softwares')?.value) || 0;
+        const equipamentos = parseFloat(document.getElementById('equipamentos')?.value) || 0;
+        const outrosTecnologia = parseFloat(document.getElementById('outrosTecnologia')?.value) || 0;
+        
+        // ========== OUTROS CUSTOS ==========
+        const transportes = parseFloat(document.getElementById('transportes')?.value) || 0;
+        const contabilidade = parseFloat(document.getElementById('contabilidade')?.value) || 0;
+        const cursos = parseFloat(document.getElementById('cursos')?.value) || 0;
+        const outrosDiversos = parseFloat(document.getElementById('outrosDiversos')?.value) || 0;
+        
+        // ========== VOLUME DE VENDAS ==========
         const qtdMensal = parseFloat(document.getElementById('qtdVendaMensal')?.value) || 100;
         
-        // Calcular totais
-        const custoVariavelUnitario = materiaPrima + embalagem + frete;
-        const custoFixoMensal = aluguel + salarios + das;
-        const custoFixoUnitario = qtdMensal > 0 ? custoFixoMensal / qtdMensal : 0;
+        // ========== CÁLCULOS TOTAIS ==========
+        
+        // Custos fixos mensais totais
+        const custoFixoMensal = aluguel + salarios + das + energia + internet + marketing + 
+                               manutencao + seguros + outrosFixos;
+        
+        // Custos de tecnologia mensais totais
+        const custoTecnologiaMensal = siteEcommerce + hospedagem + marketingDigital + 
+                                     softwares + equipamentos + outrosTecnologia;
+        
+        // Outros custos mensais totais
+        const outrosCustosMensais = transportes + contabilidade + cursos + outrosDiversos;
+        
+        // Custo fixo total (incluindo tecnologia e outros)
+        const custoFixoTotalMensal = custoFixoMensal + custoTecnologiaMensal + outrosCustosMensais;
+        
+        // Custo fixo unitário
+        const custoFixoUnitario = qtdMensal > 0 ? custoFixoTotalMensal / qtdMensal : 0;
+        
+        // Custo total unitário (variável + fixo por unidade)
         const custoTotalUnitario = custoVariavelUnitario + custoFixoUnitario;
         
-        // Armazenar dados
+        // Custo total mensal
+        const custoTotalMensal = custoTotalUnitario * qtdMensal;
+        
+        // ========== PERCENTUAIS ==========
+        const custoVariavelMensal = custoVariavelUnitario * qtdMensal;
+        const custoTotalGeral = custoTotalMensal;
+        
+        const percentualVariaveis = custoTotalGeral > 0 ? 
+            (custoVariavelMensal / custoTotalGeral * 100).toFixed(1) : 0;
+        
+        const percentualFixos = custoTotalGeral > 0 ? 
+            (custoFixoMensal / custoTotalGeral * 100).toFixed(1) : 0;
+        
+        const percentualTecnologia = custoTotalGeral > 0 ? 
+            (custoTecnologiaMensal / custoTotalGeral * 100).toFixed(1) : 0;
+        
+        // ========== ARMAZENAR DADOS ==========
         dadosNegocio.custos = {
+            // Variáveis
             variavelUnitario: custoVariavelUnitario,
+            variavelMensal: custoVariavelMensal,
+            comissoesPercent: comissoesPercent,
+            comissoesValor: comissoesValor,
+            
+            // Fixos
             fixoMensal: custoFixoMensal,
             fixoUnitario: custoFixoUnitario,
+            
+            // Tecnologia
+            tecnologiaMensal: custoTecnologiaMensal,
+            
+            // Outros
+            outrosMensais: outrosCustosMensais,
+            
+            // Totais
             totalUnitario: custoTotalUnitario,
-            totalMensal: custoTotalUnitario * qtdMensal,
-            qtdMensal: qtdMensal
+            totalMensal: custoTotalMensal,
+            qtdMensal: qtdMensal,
+            
+            // Detalhado
+            detalhado: {
+                materiaPrima: materiaPrima,
+                embalagem: embalagem,
+                frete: frete,
+                maoObraDireta: maoObraDireta,
+                aluguel: aluguel,
+                salarios: salarios,
+                das: das,
+                energia: energia,
+                internet: internet,
+                marketing: marketing,
+                manutencao: manutencao,
+                seguros: seguros,
+                siteEcommerce: siteEcommerce,
+                hospedagem: hospedagem,
+                marketingDigital: marketingDigital,
+                softwares: softwares,
+                equipamentos: equipamentos
+            }
         };
         
-        // Atualizar interface
-        atualizarElementoTexto('resumoCustoUnitario', formatarMoeda(custoTotalUnitario));
-        atualizarElementoTexto('resumoCustoFixo', formatarMoeda(custoFixoMensal));
-        atualizarElementoTexto('resumoCustoTotal', formatarMoeda(custoTotalUnitario * qtdMensal));
+        // ========== ATUALIZAR INTERFACE ==========
         
-        // Atualizar campos para outros cálculos
-        if (document.getElementById('custoVariavelUnitario')) {
-            document.getElementById('custoVariavelUnitario').value = custoVariavelUnitario.toFixed(2);
-        }
+        // Resumo principal
+        atualizarElementoTexto('resumoCustoVariavelUnitario', formatarMoeda(custoVariavelUnitario));
+        atualizarElementoTexto('resumoCustoFixoMensal', formatarMoeda(custoFixoTotalMensal));
+        atualizarElementoTexto('resumoCustoUnitarioTotal', formatarMoeda(custoTotalUnitario));
+        atualizarElementoTexto('resumoCustoTotalMensal', formatarMoeda(custoTotalMensal));
         
-        console.log('✅ Custos calculados!');
+        // Percentuais
+        atualizarElementoTexto('percentualCustosVariaveis', `${percentualVariaveis}%`);
+        atualizarElementoTexto('percentualCustosFixos', `${percentualFixos}%`);
+        atualizarElementoTexto('percentualTecnologia', `${percentualTecnologia}%`);
+        
+        console.log('✅ Custos calculados com sucesso!');
+        console.log('📊 Custo unitário total:', custoTotalUnitario);
+        console.log('📊 Custo mensal total:', custoTotalMensal);
         
     } catch (error) {
         console.error('❌ Erro ao calcular custos:', error);
         mostrarToast('Erro ao calcular custos', 'error');
     }
 }
+
+// ==================== FUNÇÃO PARA MOSTRAR CATEGORIAS DE CUSTOS ====================
+function mostrarCategoriaCustos(categoria) {
+    // Esconder todas as categorias
+    document.querySelectorAll('.categoria-custos').forEach(el => {
+        el.classList.add('hidden');
+    });
+    
+    // Remover destaque de todos os botões
+    document.querySelectorAll('[id^="btnCustos"]').forEach(btn => {
+        btn.classList.remove('bg-blue-100', 'dark:bg-blue-900', 'text-blue-800', 'dark:text-blue-300');
+        btn.classList.add('bg-gray-100', 'dark:bg-gray-700', 'text-gray-800', 'dark:text-gray-300');
+    });
+    
+    // Mostrar categoria selecionada
+    const categoriaElement = document.getElementById(`categoria${categoria.charAt(0).toUpperCase() + categoria.slice(1)}`);
+    if (categoriaElement) {
+        categoriaElement.classList.remove('hidden');
+    }
+    
+    // Destacar botão selecionado
+    const btnElement = document.getElementById(`btnCustos${categoria.charAt(0).toUpperCase() + categoria.slice(1)}`);
+    if (btnElement) {
+        btnElement.classList.remove('bg-gray-100', 'dark:bg-gray-700', 'text-gray-800', 'dark:text-gray-300');
+        btnElement.classList.add('bg-blue-100', 'dark:bg-blue-900', 'text-blue-800', 'dark:text-blue-300');
+    }
+}
+
+// ==================== ADICIONAR AO window ====================
+window.mostrarCategoriaCustos = mostrarCategoriaCustos;
+window.calcularCustos = calcularCustos;
 
 // ==================== PRECIFICAÇÃO ====================
 function atualizarMarkup(valor) {
