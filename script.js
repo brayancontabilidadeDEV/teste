@@ -138,7 +138,11 @@ document.addEventListener('DOMContentLoaded', function() {
 function inicializarAplicacao() {
     try {
         console.log('📄 Iniciando aplicação...');
-        
+// Configurar auto cálculo
+configurarAutoCalculo();
+
+// Inicializar primeira categoria de custos
+mostrarCategoriaCustos('variaveis');
         // Carregar dados salvos
         carregarDadosSalvos();
         
@@ -921,6 +925,147 @@ function calcularTudo() {
         openTab('resultados');
     }, 2500);
 }
+// ==================== FUNÇÃO PARA MOSTRAR CATEGORIAS DE CUSTOS ====================
+function mostrarCategoriaCustos(categoria) {
+    // Esconder todas as categorias
+    document.querySelectorAll('.categoria-custos').forEach(el => {
+        el.classList.add('hidden');
+    });
+    
+    // Remover destaque de todos os botões
+    document.querySelectorAll('[id^="btnCustos"]').forEach(btn => {
+        btn.classList.remove('bg-blue-100', 'dark:bg-blue-900', 'text-blue-800', 'dark:text-blue-300');
+        btn.classList.add('bg-gray-100', 'dark:bg-gray-700', 'text-gray-800', 'dark:text-gray-300');
+    });
+    
+    // Mostrar categoria selecionada
+    const categoriaElement = document.getElementById(`categoria${categoria.charAt(0).toUpperCase() + categoria.slice(1)}`);
+    if (categoriaElement) {
+        categoriaElement.classList.remove('hidden');
+    }
+    
+    // Destacar botão selecionado
+    const btnElement = document.getElementById(`btnCustos${categoria.charAt(0).toUpperCase() + categoria.slice(1)}`);
+    if (btnElement) {
+        btnElement.classList.remove('bg-gray-100', 'dark:bg-gray-700', 'text-gray-800', 'dark:text-gray-300');
+        btnElement.classList.add('bg-blue-100', 'dark:bg-blue-900', 'text-blue-800', 'dark:text-blue-300');
+    }
+}
+
+// ==================== CARREGAR EXEMPLOS DE CUSTOS ====================
+function carregarExemploCustos(tipoNegocio) {
+    const exemplos = {
+        'artesanato': {
+            materiaPrima: 25,
+            embalagem: 5,
+            frete: 8,
+            maoObraDireta: 15,
+            aluguel: 800,
+            salarios: 1500,
+            energia: 150,
+            internet: 100,
+            marketing: 300,
+            qtdVendaMensal: 50
+        },
+        'consultoria': {
+            maoObraDireta: 30,
+            aluguel: 0,
+            salarios: 2500,
+            internet: 120,
+            marketing: 500,
+            softwares: 200,
+            qtdVendaMensal: 20
+        },
+        'alimentos': {
+            materiaPrima: 12,
+            embalagem: 3,
+            frete: 5,
+            maoObraDireta: 8,
+            aluguel: 1200,
+            energia: 250,
+            internet: 100,
+            marketing: 400,
+            qtdVendaMensal: 100
+        }
+    };
+    
+    const exemplo = exemplos[tipoNegocio] || {};
+    
+    // Preencher os campos
+    Object.keys(exemplo).forEach(key => {
+        const element = document.getElementById(key);
+        if (element) {
+            element.value = exemplo[key];
+        }
+    });
+    
+    // Calcular custos
+    calcularCustos();
+    
+    mostrarToast(`Exemplo de ${tipoNegocio} carregado!`, 'success');
+}
+
+// ==================== FUNÇÃO PARA CALCULAR CUSTOS AUTOMATICAMENTE ====================
+function configurarAutoCalculo() {
+    // Adicionar event listeners a todos os campos de custo
+    const camposCusto = [
+        'materiaPrima', 'embalagem', 'frete', 'maoObraDireta', 'comissoes',
+        'outrosVariaveis', 'aluguel', 'salarios', 'das', 'energia', 'internet',
+        'marketing', 'manutencao', 'seguros', 'outrosFixos', 'siteEcommerce',
+        'hospedagem', 'marketingDigital', 'softwares', 'equipamentos',
+        'outrosTecnologia', 'transportes', 'contabilidade', 'cursos',
+        'outrosDiversos', 'qtdVendaMensal'
+    ];
+    
+    camposCusto.forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.addEventListener('input', calcularCustos);
+        }
+    });
+}
+
+// ==================== EXPORTAR DADOS DE CUSTOS ====================
+function exportarCustosParaCSV() {
+    if (!dadosNegocio.custos) {
+        mostrarToast('Calcule os custos primeiro!', 'warning');
+        return;
+    }
+    
+    const custos = dadosNegocio.custos;
+    const detalhado = custos.detalhado || {};
+    
+    let csvContent = "Categoria;Valor Unitário (R$);Valor Mensal (R$)\n";
+    
+    // Custos variáveis
+    csvContent += `Matéria-Prima;${detalhado.materiaPrima || 0};${(detalhado.materiaPrima || 0) * custos.qtdMensal}\n`;
+    csvContent += `Embalagem;${detalhado.embalagem || 0};${(detalhado.embalagem || 0) * custos.qtdMensal}\n`;
+    csvContent += `Frete;${detalhado.frete || 0};${(detalhado.frete || 0) * custos.qtdMensal}\n`;
+    csvContent += `Mão de Obra Direta;${detalhado.maoObraDireta || 0};${(detalhado.maoObraDireta || 0) * custos.qtdMensal}\n`;
+    
+    // Custos fixos
+    csvContent += `Aluguel;;${detalhado.aluguel || 0}\n`;
+    csvContent += `Salários;;${detalhado.salarios || 0}\n`;
+    csvContent += `DAS;;${detalhado.das || 0}\n`;
+    csvContent += `Energia/Água;;${detalhado.energia || 0}\n`;
+    csvContent += `Internet;;${detalhado.internet || 0}\n`;
+    csvContent += `Marketing;;${detalhado.marketing || 0}\n`;
+    
+    // Totais
+    csvContent += `\nTOTAL VARIÁVEL;${custos.variavelUnitario};${custos.variavelMensal}\n`;
+    csvContent += `TOTAL FIXO;;${custos.fixoMensal}\n`;
+    csvContent += `TOTAL UNITÁRIO;${custos.totalUnitario};\n`;
+    csvContent += `TOTAL MENSAL;;${custos.totalMensal}\n`;
+    
+    // Criar e baixar arquivo
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `custos-negocio-${new Date().toISOString().split('T')[0]}.csv`;
+    link.click();
+    
+    mostrarToast('Custos exportados para CSV!', 'success');
+}
 
 // ==================== EXPORTAR FUNÇÕES GLOBAIS ====================
 window.openTab = openTab;
@@ -935,6 +1080,10 @@ window.calcularTudo = calcularTudo;
 window.atualizarMarkup = atualizarMarkup;
 window.atualizarPrecoFinal = atualizarPrecoFinal;
 window.atualizarProjecoes = atualizarProjecoes;
+window.mostrarCategoriaCustos = mostrarCategoriaCustos;
+window.calcularCustos = calcularCustos;
+window.carregarExemploCustos = carregarExemploCustos;
+window.exportarCustosParaCSV = exportarCustosParaCSV;
 window.exportarTodosGraficos = function() {
     if (window.gerenciadorGraficos) {
         window.gerenciadorGraficos.exportarTodosGraficos();
