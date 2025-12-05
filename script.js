@@ -12,7 +12,7 @@ let dadosNegocio = {
     meta: {},
     timestamp: new Date().toISOString()
 };
-
+window.dadosNegocio = dadosNegocio;
 let passoAtualDados = 1;
 let metodoPrecificacaoSelecionado = 'markup';
 let graficosInicializados = false;
@@ -120,14 +120,33 @@ function executarAcoesTab(tabName) {
 
 // ==================== INICIALIZAÇÃO ====================
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 Calculadora MEI Premium - Brayan Contabilidade v3.0');
+    console.log('Página carregada - iniciando...');
     
-    // Verificar dependências
+    // Verificar se Chart.js foi carregado
     if (typeof Chart === 'undefined') {
-        console.error('Chart.js não carregado!');
-        mostrarToast('Erro técnico: Recarregue a página.', 'error');
+        console.error('Chart.js não foi carregado!');
         return;
     }
+    
+    console.log('Chart.js carregado com sucesso! Versão:', Chart.version);
+    
+    // Carregar dados salvos primeiro
+    carregarDadosSalvos();
+    
+    // Inicializar funcionalidades básicas
+    calcularCustos();
+    atualizarDashboard();
+    atualizarProgresso();
+    
+    // Adicionar tooltips
+    document.querySelectorAll('.info-bubble').forEach(bubble => {
+        bubble.addEventListener('mouseenter', mostrarTooltip);
+        bubble.addEventListener('mouseleave', esconderTooltip);
+    });
+    
+    // Inicializar eventos
+    inicializarEventos();
+});
     
     console.log('✅ Chart.js carregado - Versão:', Chart.version);
     
