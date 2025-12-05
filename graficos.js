@@ -1,515 +1,511 @@
-// ==================== GERENCIADOR DE GRÁFICOS ====================
-
+// ==================== GERENCIADOR DE GRÁFICOS AVANÇADO ====================
 class GerenciadorGraficos {
     constructor() {
         this.graficos = {};
-        this.coresGrafico = {
-            primary: 'rgb(59, 130, 246)',
-            success: 'rgb(16, 185, 129)',
-            warning: 'rgb(245, 158, 11)',
-            danger: 'rgb(239, 68, 68)',
-            purple: 'rgb(139, 92, 246)',
-            orange: 'rgb(249, 115, 22)'
+        this.cores = {
+            primaria: '#4F46E5',
+            secundaria: '#10B981',
+            terciaria: '#F59E0B',
+            perigo: '#EF4444',
+            info: '#3B82F6',
+            custos: ['#4F46E5', '#7C3AED', '#8B5CF6', '#A78BFA', '#C4B5FD'],
+            receita: ['#10B981', '#34D399', '#6EE7B7', '#A7F3D0'],
+            mercado: ['#F59E0B', '#FBBF24', '#FCD34D', '#FDE68A']
         };
     }
 
     inicializarGraficos() {
-        console.log('Inicializando todos os gráficos...');
+        console.log('🔄 Inicializando gráficos...');
         
-        // Gráfico do Dashboard
-        this.criarGraficoDashboard();
-        
-        // Gráfico de Composição de Preço
-        this.criarGraficoComposicaoPreco();
-        
-        // Gráfico de Comparação com Concorrência
-        this.criarGraficoComparacaoConcorrencia();
-        
-        // Gráfico de Evolução do Lucro
-        this.criarGraficoEvolucaoLucro();
-        
-        // Gráfico de Distribuição do Preço
-        this.criarGraficoDistribuicaoPreco();
-        
-        // Gráfico de Ponto de Equilíbrio
-        this.criarGraficoPontoEquilibrio();
-        
-        // Gráficos de Projeção
-        this.criarGraficoProjecaoFaturamento();
-        this.criarGraficoProjecaoLucro();
-        
-        console.log('Gráficos inicializados:', Object.keys(this.graficos));
-    }
-
-    destruirGrafico(id) {
-        if (this.graficos[id]) {
-            this.graficos[id].destroy();
-            delete this.graficos[id];
+        try {
+            // Inicializar gráficos de dashboard
+            this.inicializarGraficosDashboard();
+            
+            // Inicializar gráficos de resultados
+            this.inicializarGraficosResultados();
+            
+            // Inicializar gráficos de projeções
+            this.inicializarGraficosProjecoes();
+            
+            console.log('✅ Gráficos inicializados com sucesso!');
+        } catch (error) {
+            console.error('❌ Erro ao inicializar gráficos:', error);
         }
     }
 
-    criarGraficoDashboard() {
-        const ctx = document.getElementById('dashGraficoResumo');
-        if (!ctx) {
-            console.warn('Canvas dashGraficoResumo não encontrado');
-            return;
-        }
-
-        this.destruirGrafico('dashGraficoResumo');
-
-        this.graficos.dashGraficoResumo = new Chart(ctx.getContext('2d'), {
-            type: 'line',
-            data: {
-                labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
-                datasets: [{
-                    label: 'Faturamento',
-                    data: [0, 0, 0, 0, 0, 0],
-                    borderColor: this.coresGrafico.primary,
-                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                    tension: 0.4,
-                    fill: true
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: 'top'
-                    }
+    // ==================== GRÁFICOS DO DASHBOARD ====================
+    inicializarGraficosDashboard() {
+        // 1. Gráfico de Distribuição de Preço
+        const ctxDistribuicao = document.getElementById('graficoDistribuicaoPreco');
+        if (ctxDistribuicao) {
+            this.graficos.distribuicaoPreco = new Chart(ctxDistribuicao, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Custo Variável', 'Custo Fixo', 'Lucro'],
+                    datasets: [{
+                        data: [40, 30, 30],
+                        backgroundColor: [
+                            this.cores.custos[0],
+                            this.cores.custos[1],
+                            this.cores.receita[0]
+                        ],
+                        borderWidth: 1,
+                        borderColor: '#1F2937'
+                    }]
                 },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            callback: function(value) {
-                                return 'R$ ' + value.toLocaleString('pt-BR');
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#6B7280',
+                                padding: 20,
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += 'R$ ' + context.raw.toFixed(2);
+                                    return label;
+                                }
                             }
                         }
                     }
                 }
-            }
-        });
-    }
-
-    atualizarGraficoDashboard(dadosNegocio) {
-        const grafico = this.graficos.dashGraficoResumo;
-        if (!grafico || !dadosNegocio.resultados.receitaBruta) return;
-
-        const receita = dadosNegocio.resultados.receitaBruta;
-        const dados = [
-            receita * 0.8,
-            receita * 0.9,
-            receita,
-            receita * 1.1,
-            receita * 1.05,
-            receita * 1.15
-        ];
-
-        grafico.data.datasets[0].data = dados;
-        grafico.update();
-    }
-
-    criarGraficoComposicaoPreco() {
-        const ctx = document.getElementById('graficoComposicaoPreco');
-        if (!ctx) {
-            console.warn('Canvas graficoComposicaoPreco não encontrado');
-            return;
+            });
         }
 
-        this.destruirGrafico('graficoComposicaoPreco');
-
-        this.graficos.graficoComposicaoPreco = new Chart(ctx.getContext('2d'), {
-            type: 'doughnut',
-            data: {
-                labels: ['Custo Variável', 'Custo Fixo', 'Lucro'],
-                datasets: [{
-                    data: [0, 0, 0],
-                    backgroundColor: [
-                        this.coresGrafico.danger,
-                        this.coresGrafico.warning,
-                        this.coresGrafico.success
-                    ]
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom'
+        // 2. Gráfico de Composição do Preço (Barra)
+        const ctxComposicao = document.getElementById('graficoComposicaoPreco');
+        if (ctxComposicao) {
+            this.graficos.composicaoPreco = new Chart(ctxComposicao, {
+                type: 'bar',
+                data: {
+                    labels: ['Custo Variável', 'Custo Fixo', 'Impostos/Taxas', 'Lucro'],
+                    datasets: [{
+                        label: 'Valor (R$)',
+                        data: [25, 15, 10, 50],
+                        backgroundColor: [
+                            this.cores.custos[0],
+                            this.cores.custos[1],
+                            this.cores.perigo,
+                            this.cores.receita[0]
+                        ],
+                        borderWidth: 1,
+                        borderColor: '#374151'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `R$ ${context.raw.toFixed(2)}`;
+                                }
+                            }
+                        }
                     },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                const label = context.label || '';
-                                const value = context.parsed || 0;
-                                return label + ': R$ ' + value.toFixed(2);
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return 'R$ ' + value;
+                                },
+                                color: '#6B7280'
+                            },
+                            grid: {
+                                color: '#374151'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#6B7280',
+                                maxRotation: 45
+                            },
+                            grid: {
+                                display: false
                             }
                         }
                     }
                 }
-            }
-        });
+            });
+        }
     }
 
-    atualizarGraficoComposicaoPreco(preco, custoVarUnit, custoFixoUnit, markup) {
-        const grafico = this.graficos.graficoComposicaoPreco;
-        if (!grafico) return;
+    // ==================== GRÁFICOS DE RESULTADOS ====================
+    inicializarGraficosResultados() {
+        // Gráfico de Resultados Financeiros
+        const ctxResultados = document.getElementById('graficoResultadosFinanceiros');
+        if (ctxResultados) {
+            this.graficos.resultadosFinanceiros = new Chart(ctxResultados, {
+                type: 'bar',
+                data: {
+                    labels: ['Receita', 'Custos', 'Lucro'],
+                    datasets: [{
+                        label: 'Valor Mensal (R$)',
+                        data: [5000, 3500, 1500],
+                        backgroundColor: [
+                            this.cores.receita[0],
+                            this.cores.perigo,
+                            this.cores.primaria
+                        ],
+                        borderWidth: 1,
+                        borderColor: '#374151'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `R$ ${context.raw.toLocaleString('pt-BR')}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return 'R$ ' + value.toLocaleString('pt-BR');
+                                },
+                                color: '#6B7280'
+                            },
+                            grid: {
+                                color: '#374151'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#6B7280'
+                            },
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        }
 
-        const lucro = preco - custoVarUnit - custoFixoUnit;
+        // Gráfico de Margem de Lucro
+        const ctxMargem = document.getElementById('graficoMargemLucro');
+        if (ctxMargem) {
+            this.graficos.margemLucro = new Chart(ctxMargem, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+                    datasets: [{
+                        label: 'Margem de Lucro (%)',
+                        data: [15, 18, 22, 25, 23, 20],
+                        borderColor: this.cores.secundaria,
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.raw}%`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                },
+                                color: '#6B7280'
+                            },
+                            grid: {
+                                color: '#374151'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#6B7280'
+                            },
+                            grid: {
+                                color: '#374151'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    }
 
-        grafico.data.datasets[0].data = [
-            custoVarUnit,
+    // ==================== GRÁFICOS DE PROJEÇÕES ====================
+    inicializarGraficosProjecoes() {
+        const ctxProjecoes = document.getElementById('graficoProjecoes');
+        if (ctxProjecoes) {
+            this.graficos.projecoes = new Chart(ctxProjecoes, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                    datasets: [
+                        {
+                            label: 'Receita',
+                            data: Array(12).fill(5000).map((v, i) => v * (1 + i * 0.05)),
+                            borderColor: this.cores.receita[0],
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            borderWidth: 2,
+                            fill: true,
+                            tension: 0.3
+                        },
+                        {
+                            label: 'Lucro',
+                            data: Array(12).fill(1500).map((v, i) => v * (1 + i * 0.05)),
+                            borderColor: this.cores.primaria,
+                            backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                            borderWidth: 2,
+                            fill: true,
+                            tension: 0.3
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: '#6B7280',
+                                padding: 20
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: R$ ${context.raw.toLocaleString('pt-BR')}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return 'R$ ' + value.toLocaleString('pt-BR');
+                                },
+                                color: '#6B7280'
+                            },
+                            grid: {
+                                color: '#374151'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#6B7280'
+                            },
+                            grid: {
+                                color: '#374151'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    // ==================== ATUALIZAÇÃO DE GRÁFICOS COM DADOS ====================
+    atualizarGraficoDistribuicaoPreco(dadosCustos, precoVenda) {
+        if (!this.graficos.distribuicaoPreco || !dadosCustos || !precoVenda) return;
+        
+        const custoVariavel = dadosCustos.variavelUnitario || 0;
+        const custoFixoUnit = dadosCustos.fixoUnitario || 0;
+        const lucro = precoVenda - (custoVariavel + custoFixoUnit);
+        
+        this.graficos.distribuicaoPreco.data.datasets[0].data = [
+            custoVariavel,
             custoFixoUnit,
-            lucro
+            Math.max(0, lucro) // Não mostrar lucro negativo
         ];
-        grafico.update();
+        
+        this.graficos.distribuicaoPreco.update();
     }
 
-    criarGraficoComparacaoConcorrencia() {
-        const ctx = document.getElementById('graficoComparacaoConcorrencia');
-        if (!ctx) {
-            console.warn('Canvas graficoComparacaoConcorrencia não encontrado');
-            return;
-        }
-
-        this.destruirGrafico('graficoComparacaoConcorrencia');
-
-        this.graficos.graficoComparacaoConcorrencia = new Chart(ctx.getContext('2d'), {
-            type: 'bar',
-            data: {
-                labels: ['Mínimo', 'Médio', 'Máximo', 'Seu Preço'],
-                datasets: [{
-                    label: 'Preço (R$)',
-                    data: [45, 62, 85, 0],
-                    backgroundColor: [
-                        this.coresGrafico.danger,
-                        this.coresGrafico.warning,
-                        this.coresGrafico.success,
-                        this.coresGrafico.primary
-                    ]
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            callback: function(value) {
-                                return 'R$ ' + value.toLocaleString('pt-BR');
-                            }
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    atualizarGraficoComparacaoConcorrencia() {
-        const grafico = this.graficos.graficoComparacaoConcorrencia;
-        if (!grafico) return;
-
-        const precoMin = parseFloat(document.getElementById('precoMinConcorrencia')?.value) || 45;
-        const precoMedio = parseFloat(document.getElementById('precoMedioConcorrencia')?.value) || 62;
-        const precoMax = parseFloat(document.getElementById('precoMaxConcorrencia')?.value) || 85;
-        const meuPreco = parseFloat(document.getElementById('precoVendaFinal')?.value) || 0;
-
-        grafico.data.datasets[0].data = [precoMin, precoMedio, precoMax, meuPreco];
-        grafico.update();
-    }
-
-    criarGraficoEvolucaoLucro() {
-        const ctx = document.getElementById('graficoEvolucaoLucro');
-        if (!ctx) {
-            console.warn('Canvas graficoEvolucaoLucro não encontrado');
-            return;
-        }
-
-        this.destruirGrafico('graficoEvolucaoLucro');
-
-        this.graficos.graficoEvolucaoLucro = new Chart(ctx.getContext('2d'), {
-            type: 'line',
-            data: {
-                labels: ['Mês 1', 'Mês 2', 'Mês 3', 'Mês 4', 'Mês 5', 'Mês 6'],
-                datasets: [{
-                    label: 'Lucro',
-                    data: [0, 0, 0, 0, 0, 0],
-                    borderColor: this.coresGrafico.success,
-                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                    tension: 0.4,
-                    fill: true
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: true
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            callback: function(value) {
-                                return 'R$ ' + value.toLocaleString('pt-BR');
-                            }
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    criarGraficoDistribuicaoPreco() {
-        const ctx = document.getElementById('graficoDistribuicaoPreco');
-        if (!ctx) {
-            console.warn('Canvas graficoDistribuicaoPreco não encontrado');
-            return;
-        }
-
-        this.destruirGrafico('graficoDistribuicaoPreco');
-
-        this.graficos.graficoDistribuicaoPreco = new Chart(ctx.getContext('2d'), {
-            type: 'pie',
-            data: {
-                labels: ['Custos Variáveis', 'Custos Fixos', 'Impostos', 'Lucro'],
-                datasets: [{
-                    data: [0, 0, 0, 0],
-                    backgroundColor: [
-                        this.coresGrafico.danger,
-                        this.coresGrafico.warning,
-                        this.coresGrafico.orange,
-                        this.coresGrafico.success
-                    ]
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom'
-                    }
-                }
-            }
-        });
-    }
-
-    atualizarGraficoDistribuicaoPreco(custos, preco) {
-        const grafico = this.graficos.graficoDistribuicaoPreco;
-        if (!grafico || !custos.totalUnitario) return;
-
-        const impostos = preco * 0.07;
-        const lucro = preco - custos.totalUnitario - impostos;
-
-        grafico.data.datasets[0].data = [
-            custos.variavelUnitario,
-            custos.fixoUnitario,
-            impostos,
-            lucro
+    atualizarGraficoComposicaoPreco(precoTotal, custoVariavel, custoFixo, markup) {
+        if (!this.graficos.composicaoPreco) return;
+        
+        // Calcular impostos e taxas (estimado em 15%)
+        const impostosTaxas = precoTotal * 0.15;
+        const lucro = precoTotal - (custoVariavel + custoFixo + impostosTaxas);
+        
+        this.graficos.composicaoPreco.data.datasets[0].data = [
+            custoVariavel,
+            custoFixo,
+            impostosTaxas,
+            Math.max(0, lucro)
         ];
-        grafico.update();
+        
+        this.graficos.composicaoPreco.update();
     }
 
-    criarGraficoPontoEquilibrio() {
-        const ctx = document.getElementById('graficoPontoEquilibrio');
-        if (!ctx) {
-            console.warn('Canvas graficoPontoEquilibrio não encontrado');
-            return;
+    atualizarGraficoResultados(dadosResultados) {
+        if (!this.graficos.resultadosFinanceiros || !dadosResultados) return;
+        
+        this.graficos.resultadosFinanceiros.data.datasets[0].data = [
+            dadosResultados.receitaMensal || 0,
+            dadosResultados.custoTotalMensal || 0,
+            dadosResultados.lucroMensal || 0
+        ];
+        
+        this.graficos.resultadosFinanceiros.update();
+        
+        // Atualizar gráfico de margem com dados históricos simulados
+        if (this.graficos.margemLucro) {
+            const margemAtual = dadosResultados.margemLucro || 0;
+            const margens = Array(6).fill(0).map((_, i) => {
+                // Simular variação histórica baseada na margem atual
+                const variacao = (Math.random() - 0.5) * 5;
+                return Math.max(5, Math.min(50, margemAtual + variacao));
+            });
+            
+            this.graficos.margemLucro.data.datasets[0].data = margens;
+            this.graficos.margemLucro.update();
         }
-
-        this.destruirGrafico('graficoPontoEquilibrio');
-
-        this.graficos.graficoPontoEquilibrio = new Chart(ctx.getContext('2d'), {
-            type: 'line',
-            data: {
-                labels: ['0', '20', '40', '60', '80', '100'],
-                datasets: [
-                    {
-                        label: 'Receita',
-                        data: [0, 0, 0, 0, 0, 0],
-                        borderColor: this.coresGrafico.success,
-                        tension: 0.1
-                    },
-                    {
-                        label: 'Custo Total',
-                        data: [0, 0, 0, 0, 0, 0],
-                        borderColor: this.coresGrafico.danger,
-                        tension: 0.1
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: true
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            callback: function(value) {
-                                return 'R$ ' + value.toLocaleString('pt-BR');
-                            }
-                        }
-                    }
-                }
-            }
-        });
     }
 
-    criarGraficoProjecaoFaturamento() {
-        const ctx = document.getElementById('graficoProjecaoFaturamento');
-        if (!ctx) {
-            console.warn('Canvas graficoProjecaoFaturamento não encontrado');
-            return;
-        }
-
-        this.destruirGrafico('graficoProjecaoFaturamento');
-
-        this.graficos.graficoProjecaoFaturamento = new Chart(ctx.getContext('2d'), {
-            type: 'line',
-            data: {
-                labels: [],
-                datasets: [{
-                    label: 'Faturamento Projetado',
-                    data: [],
-                    borderColor: this.coresGrafico.primary,
-                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                    tension: 0.4,
-                    fill: true
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: true
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            callback: function(value) {
-                                return 'R$ ' + value.toLocaleString('pt-BR');
-                            }
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    atualizarGraficoProjecaoFaturamento(meses, receitas) {
-        const grafico = this.graficos.graficoProjecaoFaturamento;
-        if (!grafico) return;
-
-        grafico.data.labels = meses;
-        grafico.data.datasets[0].data = receitas;
-        grafico.update();
-    }
-
-    criarGraficoProjecaoLucro() {
-        const ctx = document.getElementById('graficoProjecaoLucro');
-        if (!ctx) {
-            console.warn('Canvas graficoProjecaoLucro não encontrado');
-            return;
-        }
-
-        this.destruirGrafico('graficoProjecaoLucro');
-
-        this.graficos.graficoProjecaoLucro = new Chart(ctx.getContext('2d'), {
-            type: 'bar',
-            data: {
-                labels: [],
-                datasets: [{
-                    label: 'Lucro Projetado',
-                    data: [],
-                    backgroundColor: this.coresGrafico.success
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: true
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            callback: function(value) {
-                                return 'R$ ' + value.toLocaleString('pt-BR');
-                            }
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    atualizarGraficoProjecaoLucro(meses, lucros) {
-        const grafico = this.graficos.graficoProjecaoLucro;
-        if (!grafico) return;
-
-        grafico.data.labels = meses;
-        grafico.data.datasets[0].data = lucros;
-        grafico.update();
+    atualizarGraficoProjecoes(labels, receita, lucro, acumulado) {
+        if (!this.graficos.projecoes) return;
+        
+        this.graficos.projecoes.data.labels = labels;
+        this.graficos.projecoes.data.datasets[0].data = receita;
+        this.graficos.projecoes.data.datasets[1].data = lucro;
+        
+        this.graficos.projecoes.update();
     }
 
     atualizarTodosGraficosComDados() {
-        console.log('Atualizando todos os gráficos com dados...');
+        console.log('🔄 Atualizando todos os gráficos com dados atuais...');
         
-        if (window.dadosNegocio) {
-            this.atualizarGraficoDashboard(window.dadosNegocio);
+        try {
+            // Obter dados atuais
+            const dadosNegocio = window.dadosNegocio || {};
+            const custos = dadosNegocio.custos || {};
+            const resultados = dadosNegocio.resultados || {};
             
-            if (window.dadosNegocio.custos) {
-                const preco = parseFloat(document.getElementById('precoVendaFinal')?.value) || 0;
-                this.atualizarGraficoDistribuicaoPreco(window.dadosNegocio.custos, preco);
+            const precoVenda = parseFloat(document.getElementById('precoVendaFinal')?.value) || 0;
+            
+            // Atualizar gráficos individuais
+            if (custos.totalUnitario && precoVenda) {
+                this.atualizarGraficoDistribuicaoPreco(custos, precoVenda);
+                this.atualizarGraficoComposicaoPreco(
+                    precoVenda,
+                    custos.variavelUnitario || 0,
+                    custos.fixoUnitario || 0,
+                    custos.markupSugerido || 100
+                );
             }
             
-            this.atualizarGraficoComparacaoConcorrencia();
+            if (resultados.lucroMensal) {
+                this.atualizarGraficoResultados(resultados);
+            }
+            
+            console.log('✅ Gráficos atualizados com dados atuais!');
+        } catch (error) {
+            console.error('❌ Erro ao atualizar gráficos:', error);
         }
     }
 
-    exportarGraficoParaImagem(idGrafico, nomeArquivo) {
-        const grafico = this.graficos[idGrafico];
-        if (!grafico) {
-            console.warn('Gráfico não encontrado:', idGrafico);
-            return;
+    // ==================== FUNÇÕES DE ESTRATÉGIA DE PRECIFICAÇÃO ====================
+    gerarEstrategiaPrecificacao(dados) {
+        if (!dados || !dados.custos || !dados.mercado) {
+            return this.gerarEstrategiaPadrao();
         }
-
-        const url = grafico.toBase64Image();
-        const link = document.createElement('a');
-        link.download = nomeArquivo;
-        link.href = url;
-        link.click();
+        
+        const estrategia = {
+            nome: '',
+            descricao: '',
+            recomendacao: '',
+            precos: {},
+            grafico: null
+        };
+        
+        const custoUnitario = dados.custos.totalUnitario || 0;
+        const precoMedioMercado = dados.mercado.precoMedio || 0;
+        
+        // Determinar melhor estratégia baseada nos dados
+        if (custoUnitario * 2 < precoMedioMercado) {
+            // Muito abaixo do mercado
+            estrategia.nome = 'Premium Competitivo';
+            estrategia.descricao = 'Você pode se posicionar como premium com preço competitivo';
+            estrategia.recomendacao = `Aumente gradualmente para R$ ${(custoUnitario * 2.5).toFixed(2)} para se alinhar ao mercado`;
+        } else if (custoUnitario * 1.5 > precoMedioMercado) {
+            // Acima do mercado
+            estrategia.nome = 'Diferenciação por Valor';
+            estrategia.descricao = 'Foque em destacar os diferenciais do seu produto';
+            estrategia.recomendacao = 'Mantenha o preço mas melhore a comunicação de valor';
+        } else {
+            // No mercado
+            estrategia.nome = 'Preço Competitivo';
+            estrategia.descricao = 'Posicionamento ideal no mercado';
+            estrategia.recomendacao = 'Mantenha o preço atual e busque eficiências';
+        }
+        
+        // Gerar opções de preço
+        estrategia.precos = {
+            minimo: custoUnitario * 1.3,
+            ideal: custoUnitario * 1.8,
+            premium: custoUnitario * 2.2,
+            mercado: precoMedioMercado
+        };
+        
+        return estrategia;
     }
-
-    exportarTodosGraficos() {
-        Object.keys(this.graficos).forEach(id => {
-            this.exportarGraficoParaImagem(id, `${id}.png`);
-        });
+    
+    gerarEstrategiaPadrao() {
+        return {
+            nome: 'Markup Tradicional',
+            descricao: 'Estratégia baseada em markup sobre custos',
+            recomendacao: 'Aplique um markup de 100% sobre seus custos totais',
+            precos: {
+                minimo: 0,
+                ideal: 0,
+                premium: 0,
+                mercado: 0
+            }
+        };
     }
 }
 
-// Expor globalmente
+// Exportar para uso global
 window.GerenciadorGraficos = GerenciadorGraficos;
